@@ -13,8 +13,8 @@ namespace Game.Factories
 	{
 		private const string TRANSITION_SCREEN_ID = "GUI/gui_transition";
 
-		private ISceneController newScene;
-		private ISceneController currentScene;
+		private IStateController newScene;
+		private IStateController currentScene;
 
 		private SceneLoadedCallback onNewSceneLoaded;
 
@@ -23,7 +23,7 @@ namespace Game.Factories
 
 		private TransitionWrapper m_transitionScreen;
 
-		public SceneFactory()
+		public StateFactory()
 		{
 			isTransitionDone = true;//Don't show transition screen if it's our first load.
 			isSceneLoaded = false;
@@ -32,7 +32,7 @@ namespace Game.Factories
 			m_transitionScreen = new TransitionWrapper(transitionScreen);
 		}
 
-		public void LoadScene<T, S>(SceneLoadedCallback callback, S passedParams) where T : ISceneController, new()
+		public void LoadScene<T, S>(SceneLoadedCallback callback, S passedParams) where T : IStateController, new()
 		{
 			onNewSceneLoaded = callback;
 
@@ -83,7 +83,7 @@ namespace Game.Factories
 			}
 		}
 
-		public void StartScene<T>() where T : ISceneController
+		public void StartScene<T>() where T : IStateController
 		{
 			if(currentScene is T)
 			{

@@ -9,12 +9,12 @@ using Game.Controllers;
 public class Engine : MonoBehaviour
 {
 	private FrameTimeUpdateController m_updateController;
-	private GameFlowController m_gameFlow;
+	private FlowController m_gameFlow;
 
 	public void Start ()
 	{
 		m_updateController = FrameTimeUpdateController.GetInstance();
-		m_gameFlow = new GameFlowController();
+		m_gameFlow = new FlowController();
 		m_gameFlow.StartGame();
 	}
 

@@ -1,15 +1,4 @@
-//------------------------------------------------------------------------------
-// ISceneController.cs
-//
-// Description:
-//  Interface for classes encapsulating scene content.
-//  (e.g. BattleController, CharacterSelectionController, etc.)
-//
-// Author:
-//       Benjamin Mosher <ben.mosher@disney.com>
-//
-// Copyright (c) 2014 Disney Interactive
-//------------------------------------------------------------------------------
+//IStateController.cs
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +7,7 @@ namespace Game.Controllers.Interfaces
 {
 	public delegate void SceneLoadedCallback();
 
-	public interface ISceneController
+	public interface IStateController
 	{
 		/// <summary>
 		/// Method called from SceneFactory to commence loading for any assets this scene controller needs. IMPORTANT: Assets should NOT be added to the scene

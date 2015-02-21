@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Controllers
 {
-	public class MainMenuController : ISceneController
+	public class MainMenuController : IStateController
 	{
 		private const string MAIN_MENU_ID = "GUI/gui_mainMenu";
 
