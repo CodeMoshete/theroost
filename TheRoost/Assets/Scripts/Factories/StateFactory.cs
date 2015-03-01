@@ -39,6 +39,7 @@ namespace Game.Factories
 			//Don't show transition screen if it's our first load.
 			if(!isTransitionDone)
 			{
+				m_transitionScreen.SetActive(true);
 				m_transitionScreen.PlayTransitionIn(onTransitionShown);
 			}
 
@@ -53,6 +54,11 @@ namespace Game.Factories
 			{
 				onSceneReady();
 			}
+		}
+
+		private void OnTransitionHidden()
+		{
+			m_transitionScreen.SetActive(false);
 		}
 
 		private void onSceneLoaded()
@@ -75,7 +81,7 @@ namespace Game.Factories
 
 			currentScene = newScene;
 			currentScene.Start();
-			m_transitionScreen.PlayTransitionOut();
+			m_transitionScreen.PlayTransitionOut(OnTransitionHidden);
 
 			if(onNewSceneLoaded != null)
 			{

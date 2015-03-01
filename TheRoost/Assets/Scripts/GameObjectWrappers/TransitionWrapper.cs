@@ -38,6 +38,11 @@ namespace GameObjectWrappers
 			m_animator.Play(TRANSITION_OUT_ID);
 		}
 
+		public void SetActive(bool active)
+		{
+			m_wrappedObject.SetActive(active);
+		}
+
 		public void OnAnimationEvent(string eventType)
 		{
 			if(eventType == TRANSITION_OVER_EVENT && m_onAnimationOver != null)
