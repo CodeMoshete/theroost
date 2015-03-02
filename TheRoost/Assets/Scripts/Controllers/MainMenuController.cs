@@ -5,10 +5,11 @@ using System;
 using Game.Controllers.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
+using Controllers.Interfaces;
 
 namespace Controllers
 {
-	public class MainMenuController : IStateController
+	public class MainMenuController : IStateController, IUpdateObserver
 	{
 		private const string MAIN_MENU_ID = "GUI/gui_mainMenu";
 		private const string CUBE_ID = "Models/Cube2";
@@ -38,6 +39,8 @@ namespace Controllers
 			m_cube.name = "Poop";
 			GameObject.Find("Main Camera").transform.SetParent(m_cube.transform);
 			GameObject.Find("StartButton").GetComponent<Button>().onClick.AddListener(StartClicked);
+
+			FrameTimeUpdateController.GetInstance().RegisterForUpdate(this);
 		}
 
 		private void StartClicked()
@@ -45,8 +48,14 @@ namespace Controllers
 			GameObject.Destroy(m_mainMenu);
 		}
 
+		public void Update(float dt)
+		{
+			//Put update code in here.
+		}
+
 		public void Unload()
 		{
+			FrameTimeUpdateController.GetInstance().UnregisterForUpdate(this);
 			GameObject.Destroy(m_mainMenu);
 			m_mainMenu = null;
 		}
