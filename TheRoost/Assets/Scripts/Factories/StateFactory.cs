@@ -28,7 +28,8 @@ namespace Game.Factories
 			isTransitionDone = true;//Don't show transition screen if it's our first load.
 			isSceneLoaded = false;
 
-			GameObject transitionScreen = GameObject.Instantiate(Resources.Load<GameObject>(TRANSITION_SCREEN_ID)) as GameObject;
+			GameObject transitionScreen = 
+				GameObject.Instantiate(Resources.Load<GameObject>(TRANSITION_SCREEN_ID)) as GameObject;
 			m_transitionScreen = new TransitionWrapper(transitionScreen);
 		}
 

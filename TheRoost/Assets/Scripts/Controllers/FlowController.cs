@@ -26,7 +26,7 @@ namespace Game.Controllers
 		public void LoadMainMenu()
 		{
 			MainMenuLoadParams passedParams = new MainMenuLoadParams();
-			sceneFactory.LoadScene<MainMenuController, MainMenuLoadParams>(OnSceneLoaded, passedParams);
+			sceneFactory.LoadScene<MainMenuPedestalController, MainMenuLoadParams>(OnSceneLoaded, passedParams);
 		}
 
 		public void OnSceneLoaded()
