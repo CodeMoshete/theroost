@@ -6,41 +6,65 @@ using UnityEngine;
 using Delegates;
 using MonoBehaviors.Interfaces;
 using MonoBehaviors;
+using Services;
+using Controllers.Interfaces;
 
 namespace GameObjectWrappers
 {
-	public class TransitionWrapper : IAnimationEventObserver
+	public class TransitionWrapper : IUpdateObserver
 	{
 		private const string TRANSITION_OVER_EVENT = "transitionOver";
-		private const string TRANSITION_IN_ID = "TransitionIn";
-		private const string TRANSITION_OUT_ID = "TransitionOut";
+		private const string TRANSITION_IN_ID = "fadeIn";
+		private const string TRANSITION_OUT_ID = "fadeOut";
+		private const float FADE_DURATION = 1.5f; //seconds
 
 		private GameObject m_wrappedObject;
 		private DefaultDelegate m_onAnimationOver;
 		private Animator m_animator;
+		private float currentTime;
 
 		public TransitionWrapper (GameObject wrappedObject)
 		{
+			GameObject cam = GameObject.Find ("Camera (head)");
+			wrappedObject.transform.SetParent (cam.transform);
+			wrappedObject.transform.localPosition = Vector3.zero;
+
 			m_wrappedObject = wrappedObject;
-			m_wrappedObject.GetComponent<AnimationEventHandler>().RegisterForAnimationEvents(this);
 			m_animator = m_wrappedObject.GetComponent<Animator>();
+			Service.FrameUpdate.RegisterForUpdate (this);
 		}
 
 		public void PlayTransitionIn(DefaultDelegate onAnimationOver = null)
 		{
 			m_onAnimationOver = onAnimationOver;
-			m_animator.Play(TRANSITION_IN_ID);
+			m_animator.SetTrigger(TRANSITION_IN_ID);
+			currentTime = FADE_DURATION;
 		}
 
 		public void PlayTransitionOut(DefaultDelegate onAnimationOver = null)
 		{
 			m_onAnimationOver = onAnimationOver;
-			m_animator.Play(TRANSITION_OUT_ID);
+			m_animator.SetTrigger(TRANSITION_OUT_ID);
+			currentTime = FADE_DURATION;
 		}
 
 		public void SetActive(bool active)
 		{
 			m_wrappedObject.SetActive(active);
+		}
+
+		public void Update(float dt)
+		{
+			if (currentTime > 0f)
+			{
+				currentTime -= dt;
+
+				if (currentTime <= 0f && m_onAnimationOver != null)
+				{
+					m_onAnimationOver();
+					m_onAnimationOver = null;
+				}
+			}
 		}
 
 		public void OnAnimationEvent(string eventType)

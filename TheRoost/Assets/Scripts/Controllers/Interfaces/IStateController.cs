@@ -17,7 +17,7 @@ namespace Game.Controllers.Interfaces
 		/// <param name="onLoadedCallback">Callback to be called when the load sequence is complete.</param>
 		/// <param name="passedParams">Any initialization parameters you need to pass into the new scene controller should be sent through here.</param>
 		/// <typeparam name="S">The LoadParams Type for this scene controller.</typeparam>
-		void Load<S>(SceneLoadedCallback onLoadedCallback, S passedParams);
+		void Load(SceneLoadedCallback onLoadedCallback, object passedParams);
 
 		/// <summary>
 		/// Method called by the SceneFactory when the transition screen has covered the entire screen and the previous scene controller has finished unloading.

@@ -11,7 +11,8 @@ namespace Game.Factories
 {
 	public class StateFactory
 	{
-		private const string TRANSITION_SCREEN_ID = "GUI/gui_transition";
+//		private const string TRANSITION_SCREEN_ID = "GUI/gui_transition";
+		private const string TRANSITION_SCREEN_ID = "GUI/TransitionScreen";
 
 		private IStateController newScene;
 		private IStateController currentScene;
@@ -33,7 +34,7 @@ namespace Game.Factories
 			m_transitionScreen = new TransitionWrapper(transitionScreen);
 		}
 
-		public void LoadScene<T, S>(SceneLoadedCallback callback, S passedParams) where T : IStateController, new()
+		public void LoadScene<T>(SceneLoadedCallback callback, object passedParams) where T : IStateController, new()
 		{
 			onNewSceneLoaded = callback;
 
@@ -41,11 +42,11 @@ namespace Game.Factories
 			if(!isTransitionDone)
 			{
 				m_transitionScreen.SetActive(true);
-				m_transitionScreen.PlayTransitionIn(onTransitionShown);
+				m_transitionScreen.PlayTransitionOut(onTransitionShown);
 			}
 
 			newScene = new T();
-			newScene.Load<S>(onSceneLoaded, passedParams);
+			newScene.Load(onSceneLoaded, passedParams);
 		}
 
 		private void onTransitionShown()
@@ -82,7 +83,7 @@ namespace Game.Factories
 
 			currentScene = newScene;
 			currentScene.Start();
-			m_transitionScreen.PlayTransitionOut(OnTransitionHidden);
+			m_transitionScreen.PlayTransitionIn(OnTransitionHidden);
 
 			if(onNewSceneLoaded != null)
 			{

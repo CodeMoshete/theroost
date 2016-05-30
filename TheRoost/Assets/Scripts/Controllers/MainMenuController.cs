@@ -6,6 +6,7 @@ using Game.Controllers.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 using Controllers.Interfaces;
+using Services;
 
 namespace Controllers
 {
@@ -21,7 +22,7 @@ namespace Controllers
 		{
 		}
 
-		public void Load<S>(SceneLoadedCallback onLoadedCallback, S passedParams)
+		public void Load(SceneLoadedCallback onLoadedCallback, object passedParams)
 		{
 			m_mainMenu = GameObject.Instantiate(Resources.Load<GameObject>(MAIN_MENU_ID)) as GameObject;
 			m_mainMenu.SetActive(false);
@@ -40,7 +41,7 @@ namespace Controllers
 			GameObject.Find("Main Camera").transform.SetParent(m_cube.transform);
 			GameObject.Find("StartButton").GetComponent<Button>().onClick.AddListener(StartClicked);
 
-			FrameTimeUpdateController.GetInstance().RegisterForUpdate(this);
+			Service.FrameUpdate.RegisterForUpdate(this);
 		}
 
 		private void StartClicked()
@@ -55,7 +56,7 @@ namespace Controllers
 
 		public void Unload()
 		{
-			FrameTimeUpdateController.GetInstance().UnregisterForUpdate(this);
+			Service.FrameUpdate.UnregisterForUpdate(this);
 			GameObject.Destroy(m_mainMenu);
 			m_mainMenu = null;
 		}

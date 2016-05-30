@@ -1,0 +1,267 @@
+fileFormatVersion: 2
+guid: 9cc94898253c1ea47939c7a2866b227f
+timeCreated: 1464581347
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Box01
+    100002: ChamferBox01
+    100004: ChamferBox02
+    100006: ChamferBox03
+    100008: ChamferBox04
+    100010: ChamferBox05
+    100012: ChamferBox06
+    100014: ChamferBox07
+    100016: ChamferBox08
+    100018: ChamferBox09
+    100020: ChamferBox10
+    100022: ChamferBox12
+    100024: ChamferCyl01
+    100026: Circle01
+    100028: Circle02
+    100030: ConnecterRidge
+    100032: Cylinder01
+    100034: Cylinder02
+    100036: Cylinder04
+    100038: Cylinder07
+    100040: Cylinder08
+    100042: Cylinder09
+    100044: EngineeringTop
+    100046: //RootNode
+    100048: Nacelle
+    100050: Nacelle01
+    100052: nacelleSupports
+    100054: nacelleSupportTop
+    100056: Object01
+    100058: Object02
+    100060: Object03
+    100062: SaucerBottom
+    100064: SaucerBottomOuter
+    100066: SaucerConnecterBack
+    100068: SaucerSide
+    100070: ShuttlebayCeiling
+    100072: ShuttlebayFloor
+    100074: ShuttlebayInterior
+    100076: Sphere02
+    100078: 'Sphere02  '
+    100080: Sphere03
+    400000: Box01
+    400002: ChamferBox01
+    400004: ChamferBox02
+    400006: ChamferBox03
+    400008: ChamferBox04
+    400010: ChamferBox05
+    400012: ChamferBox06
+    400014: ChamferBox07
+    400016: ChamferBox08
+    400018: ChamferBox09
+    400020: ChamferBox10
+    400022: ChamferBox12
+    400024: ChamferCyl01
+    400026: Circle01
+    400028: Circle02
+    400030: ConnecterRidge
+    400032: Cylinder01
+    400034: Cylinder02
+    400036: Cylinder04
+    400038: Cylinder07
+    400040: Cylinder08
+    400042: Cylinder09
+    400044: EngineeringTop
+    400046: //RootNode
+    400048: Nacelle
+    400050: Nacelle01
+    400052: nacelleSupports
+    400054: nacelleSupportTop
+    400056: Object01
+    400058: Object02
+    400060: Object03
+    400062: SaucerBottom
+    400064: SaucerBottomOuter
+    400066: SaucerConnecterBack
+    400068: SaucerSide
+    400070: ShuttlebayCeiling
+    400072: ShuttlebayFloor
+    400074: ShuttlebayInterior
+    400076: Sphere02
+    400078: 'Sphere02  '
+    400080: Sphere03
+    2300000: Box01
+    2300002: ChamferBox01
+    2300004: ChamferBox02
+    2300006: ChamferBox03
+    2300008: ChamferBox04
+    2300010: ChamferBox05
+    2300012: ChamferBox06
+    2300014: ChamferBox07
+    2300016: ChamferBox08
+    2300018: ChamferBox09
+    2300020: ChamferBox10
+    2300022: ChamferBox12
+    2300024: ChamferCyl01
+    2300026: Circle01
+    2300028: Circle02
+    2300030: ConnecterRidge
+    2300032: Cylinder01
+    2300034: Cylinder02
+    2300036: Cylinder04
+    2300038: Cylinder07
+    2300040: Cylinder08
+    2300042: Cylinder09
+    2300044: EngineeringTop
+    2300046: nacelleSupports
+    2300048: nacelleSupportTop
+    2300050: Object01
+    2300052: Object02
+    2300054: Object03
+    2300056: SaucerBottom
+    2300058: SaucerBottomOuter
+    2300060: SaucerConnecterBack
+    2300062: SaucerSide
+    2300064: ShuttlebayCeiling
+    2300066: ShuttlebayFloor
+    2300068: ShuttlebayInterior
+    2300070: Sphere02
+    2300072: 'Sphere02  '
+    2300074: Sphere03
+    3300000: Box01
+    3300002: ChamferBox01
+    3300004: ChamferBox02
+    3300006: ChamferBox03
+    3300008: ChamferBox04
+    3300010: ChamferBox05
+    3300012: ChamferBox06
+    3300014: ChamferBox07
+    3300016: ChamferBox08
+    3300018: ChamferBox09
+    3300020: ChamferBox10
+    3300022: ChamferBox12
+    3300024: ChamferCyl01
+    3300026: Circle01
+    3300028: Circle02
+    3300030: ConnecterRidge
+    3300032: Cylinder01
+    3300034: Cylinder02
+    3300036: Cylinder04
+    3300038: Cylinder07
+    3300040: Cylinder08
+    3300042: Cylinder09
+    3300044: EngineeringTop
+    3300046: nacelleSupports
+    3300048: nacelleSupportTop
+    3300050: Object01
+    3300052: Object02
+    3300054: Object03
+    3300056: SaucerBottom
+    3300058: SaucerBottomOuter
+    3300060: SaucerConnecterBack
+    3300062: SaucerSide
+    3300064: ShuttlebayCeiling
+    3300066: ShuttlebayFloor
+    3300068: ShuttlebayInterior
+    3300070: Sphere02
+    3300072: 'Sphere02  '
+    3300074: Sphere03
+    4300000: 'Sphere02  '
+    4300002: ShuttlebayFloor
+    4300004: ShuttlebayInterior
+    4300006: ChamferBox12
+    4300008: ChamferCyl01
+    4300010: Circle01
+    4300012: Circle02
+    4300014: Object03
+    4300016: Cylinder01
+    4300018: ConnecterRidge
+    4300020: SaucerConnecterBack
+    4300022: Sphere03
+    4300024: Cylinder07
+    4300026: EngineeringTop
+    4300028: ChamferBox01
+    4300030: nacelleSupports
+    4300032: nacelleSupportTop
+    4300034: ChamferBox04
+    4300036: ChamferBox03
+    4300038: ChamferBox02
+    4300040: ChamferBox05
+    4300042: ChamferBox06
+    4300044: ChamferBox07
+    4300046: ChamferBox08
+    4300048: ChamferBox09
+    4300050: Cylinder02
+    4300052: Cylinder08
+    4300054: Cylinder04
+    4300056: Object01
+    4300058: Object02
+    4300060: Cylinder09
+    4300062: ChamferBox10
+    4300064: Box01
+    4300066: ShuttlebayCeiling
+    4300068: SaucerBottom
+    4300070: Sphere02
+    4300072: SaucerSide
+    4300074: SaucerBottomOuter
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

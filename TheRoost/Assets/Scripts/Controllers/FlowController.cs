@@ -25,13 +25,19 @@ namespace Game.Controllers
 
 		public void LoadMainMenu()
 		{
-			MainMenuLoadParams passedParams = new MainMenuLoadParams();
-			sceneFactory.LoadScene<MainMenuPedestalController, MainMenuLoadParams>(OnSceneLoaded, passedParams);
+			MainMenuLoadParams passedParams = new MainMenuLoadParams(LoadBattle);
+			sceneFactory.LoadScene<MainMenuPedestalController>(OnSceneLoaded, passedParams);
+		}
+
+		public void LoadBattle(ShipEntry chosenShip)
+		{
+			BattleLoadParams passedParams = new BattleLoadParams(LoadMainMenu, chosenShip);
+			sceneFactory.LoadScene<BattleController>(OnSceneLoaded, passedParams);
 		}
 
 		public void OnSceneLoaded()
 		{
-
+			// Intentionally empty for now...
 		}
 	}
 }

@@ -5,21 +5,20 @@ using UnityEngine;
 using System.Collections;
 using Controllers;
 using Game.Controllers;
+using Services;
 
 public class Engine : MonoBehaviour
 {
-	private FrameTimeUpdateController m_updateController;
 	private FlowController m_gameFlow;
 
 	public void Start ()
 	{
-		m_updateController = FrameTimeUpdateController.GetInstance();
 		m_gameFlow = new FlowController();
 		m_gameFlow.StartGame();
 	}
 
 	public void Update()
 	{
-		m_updateController.Update(this);
+		Service.FrameUpdate.Update(this);
 	}
 }
