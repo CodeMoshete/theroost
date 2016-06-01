@@ -2,12 +2,14 @@
 //Wrapper class for the transition screen.
 
 using System;
-using UnityEngine;
-using Delegates;
-using MonoBehaviors.Interfaces;
-using MonoBehaviors;
-using Services;
+using Controllers;
 using Controllers.Interfaces;
+using Delegates;
+using Events;
+using MonoBehaviors;
+using MonoBehaviors.Interfaces;
+using Services;
+using UnityEngine;
 
 namespace GameObjectWrappers
 {
@@ -23,15 +25,16 @@ namespace GameObjectWrappers
 		private Animator m_animator;
 		private float currentTime;
 
+		private Transform vrCam;
+
 		public TransitionWrapper (GameObject wrappedObject)
 		{
-			GameObject cam = GameObject.Find ("Camera (head)");
-			wrappedObject.transform.SetParent (cam.transform);
-			wrappedObject.transform.localPosition = Vector3.zero;
-
 			m_wrappedObject = wrappedObject;
 			m_animator = m_wrappedObject.GetComponent<Animator>();
+			vrCam = GameObject.Find ("Camera (head)").transform;
+			ReParentTransitionWrapper (vrCam);
 			Service.FrameUpdate.RegisterForUpdate (this);
+			Service.Events.AddListener (EventId.DebugCameraControlsActive, OnDebugControlsToggled);
 		}
 
 		public void PlayTransitionIn(DefaultDelegate onAnimationOver = null)
@@ -73,6 +76,26 @@ namespace GameObjectWrappers
 			{
 				m_onAnimationOver();
 				m_onAnimationOver = null;
+			}
+		}
+
+		private void ReParentTransitionWrapper(Transform newParent)
+		{
+			m_wrappedObject.transform.SetParent (newParent);
+			m_wrappedObject.transform.localPosition = Vector3.zero;
+		}
+
+		private void OnDebugControlsToggled(object cookie)
+		{
+			bool isActive = (bool)cookie;
+			if (isActive)
+			{
+				Transform debugCamera = GameObject.Find (DebugCameraController.DEBUG_CAMERA_NAME).transform;
+				ReParentTransitionWrapper (debugCamera);
+			}
+			else
+			{
+				ReParentTransitionWrapper (vrCam);
 			}
 		}
 	}

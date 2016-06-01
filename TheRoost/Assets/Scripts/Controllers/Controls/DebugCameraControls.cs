@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace HammerEditor.Main.Cameras.ControlSystems
 {
-    public class EditorCameraControls
+    public class DebugCameraControls
     {
         private readonly Vector3 CAM_START_POS = new Vector3(15f, 11f, 12f);
         private readonly Vector3 CAM_START_ROT = new Vector3(35f, 225f, 0f);
         private const string ORBIT_CONTAINER_NAME = "OrbitContainer";
-        private const float MOVE_SPEED = 0.3f;
+        private const float MOVE_SPEED = 0.1f;
         private const float MOVE_SPEED_MULT = 3f;
         private const float CAM_LOOK_MULT = 0.25f;
 
@@ -33,7 +33,7 @@ namespace HammerEditor.Main.Cameras.ControlSystems
             // - Transform.Translate(Vector3)
             // - Transform.eulerAngles
             // - Quaternion.Euler(Vector3)
-//            transform = GameObject.Find(EditorConstants.EDITOR_CAMERA_ID).transform;
+			transform = cam.transform;
             transform.position = CAM_START_POS;
             transform.eulerAngles = CAM_START_ROT;
         }
@@ -174,7 +174,7 @@ namespace HammerEditor.Main.Cameras.ControlSystems
         
         private void ClearCamTarget()
         {
-            if (!orbitContainer == null)
+            if (orbitContainer != null)
             {
                 transform.SetParent(null);
                 GameObject.Destroy(orbitContainer.gameObject);

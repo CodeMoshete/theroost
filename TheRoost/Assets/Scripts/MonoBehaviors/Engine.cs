@@ -9,12 +9,15 @@ using Services;
 
 public class Engine : MonoBehaviour
 {
-	private FlowController m_gameFlow;
+	private FlowController gameFlow;
+	private DebugCameraController debugCam;
 
 	public void Start ()
 	{
-		m_gameFlow = new FlowController();
-		m_gameFlow.StartGame();
+		gameFlow = new FlowController();
+		gameFlow.StartGame();
+
+		debugCam = new DebugCameraController ();
 	}
 
 	public void Update()

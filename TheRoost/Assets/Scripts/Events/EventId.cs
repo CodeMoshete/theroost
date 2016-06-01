@@ -13,6 +13,7 @@ namespace Events
 		VRHandCollisionExit,
 		VRControllerPulse,
 		VRControllerTriggerPress,
-		VRControllerTriggerRelease
+		VRControllerTriggerRelease,
+		DebugCameraControlsActive
 	}
 }
