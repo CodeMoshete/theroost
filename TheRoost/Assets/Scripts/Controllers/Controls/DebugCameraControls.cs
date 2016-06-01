@@ -1,11 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="EditorCameraControls.cs" company="Disney Interactive">
-//     Copyright (c) 2015 Disney Interactive. All rights reserved.
-// </copyright>
-// <contact>Benjamin Mosher</contact>
-//-----------------------------------------------------------------------
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HammerEditor.Main.Cameras.ControlSystems
 {
