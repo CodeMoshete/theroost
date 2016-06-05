@@ -41,5 +41,11 @@ namespace Models
 			Model.transform.position = SpawnPos;
 			Model.transform.eulerAngles = SpawnRotation;
 		}
+
+		public void Unload ()
+		{
+			GameObject.Destroy (Model);
+		}
+
 	}
 }
