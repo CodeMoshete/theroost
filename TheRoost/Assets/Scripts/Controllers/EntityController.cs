@@ -41,15 +41,17 @@ public class EntityController
 
 		string resCount = localEntityTypeCounts [ship.ResourceName].ToString ();
 		string shipId = USER_PREFIX + Service.Network.PlayerId + SHIP_PREFIX + ship.ResourceName + resCount;
+		Debug.Log ("mine: " + shipId);
 
-		return AddShipInternal (ship, spawnPos, spawnRot, shipId);
+		ShipEntity spawnedShip = AddShipInternal (ship, spawnPos, spawnRot, shipId);
+		Service.Network.BroadcastEntitySpawned (spawnedShip);
+		return spawnedShip;
 	}
 
 	private ShipEntity AddShipInternal(ShipEntry ship, Vector3 spawnPos, Vector3 spawnRot, string uid)
 	{
 		ShipEntity entity = new ShipEntity (ship, uid, spawnPos, spawnRot);
 		trackedEntities.Add (entity.Id, entity);
-		Service.Network.BroadcastEntitySpawned (entity);
 		return entity;
 	}
 
@@ -59,7 +61,8 @@ public class EntityController
 		switch (spawnInfo.EntityType)
 		{
 			case EntityType.Ship:
-				ShipEntry entry = typeof(ShipEntry).GetProperty (spawnInfo.EntryName).GetValue(null, null) as ShipEntry;
+				ShipEntry entry = typeof(ShipEntry).GetProperty (spawnInfo.EntryName).GetValue (null, null) as ShipEntry;
+				Debug.Log ("theirs: " + spawnInfo.EntityId);
 				AddShipInternal (entry, spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
 				break;
 		}

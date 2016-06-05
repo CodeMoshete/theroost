@@ -55,7 +55,7 @@ namespace Controllers
 
 		public void OnGrabShip()
 		{
-			if (vrRig.activeSelf)
+			if (vrRig != null && vrRig.activeSelf)
 			{
 				float lDist = 
 					Vector3.SqrMagnitude (leftController.transform.position - localShip.Model.transform.position);

@@ -67,7 +67,7 @@ namespace Services
 			if(!m_isInitialized)
 			{
 				//Serialize player team
-				PhotonNetwork.logLevel = PhotonLogLevel.Full;
+				PhotonNetwork.logLevel = PhotonLogLevel.ErrorsOnly;
 				m_onStartBattleLoad = startBattleCallback;
 				m_updateStep = 0;
 				m_eventBatch = "";
