@@ -25,6 +25,8 @@ namespace Game.Controllers.Network.Enums
 		PlayerAbility,
 		CompanionAbility,
 		PlayerCapture,
+		PlayerConnect,
+		PlayerIdentify,
 		PlayerDisconnect,
 		EntityHealth,
 		EntityDeath,

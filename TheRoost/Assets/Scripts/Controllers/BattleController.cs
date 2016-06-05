@@ -50,7 +50,7 @@ namespace Controllers
 		{
 			Service.FrameUpdate.RegisterForUpdate(this);
 			// TODO: Base this off of player ID rather than IsMaster so we can support more than 2 player positions.
-			Vector3 spawnPos = Service.Network.IsMaster ? new Vector3(0f, 0f, -1.5f) : new Vector3(0f, 0f, 1.5f);
+			Vector3 spawnPos = Service.Network.IsMaster ? new Vector3(0f, 1f, -1.5f) : new Vector3(0f, 1f, 1.5f);
 			localShip = entityController.AddLocalShip (selectedShip, spawnPos);
 			controls.RegisterOnPress (localShip.Model, OnGrabShip);
 		}

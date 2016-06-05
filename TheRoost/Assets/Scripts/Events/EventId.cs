@@ -4,6 +4,7 @@ namespace Events
 	{
 		NetPlayerDisconnected,
 		NetPlayerConnected,
+		NetPlayerIdentified,
 		EntitySpawned,
 		EntityDestroyed,
 		EntityHealthUpdate,
