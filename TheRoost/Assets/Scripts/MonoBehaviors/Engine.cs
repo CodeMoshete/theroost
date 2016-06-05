@@ -6,6 +6,7 @@ using System.Collections;
 using Controllers;
 using Game.Controllers;
 using Services;
+using Events;
 
 public class Engine : MonoBehaviour
 {
@@ -22,5 +23,10 @@ public class Engine : MonoBehaviour
 	public void Update()
 	{
 		Service.FrameUpdate.Update(this);
+	}
+
+	public void OnApplicationQuit()
+	{
+		Service.Events.SendEvent (EventId.ApplicationExit, null);
 	}
 }

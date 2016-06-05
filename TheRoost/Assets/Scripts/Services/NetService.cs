@@ -37,7 +37,6 @@ namespace Services
 		public bool IsInitialized { get{ return m_isInitialized; } set{} }
 
 		private bool m_isInitialized;
-//		private bool m_isOpponenetLoaded;
 		private NetworkStatus m_netStatus;
 
 		private string m_eventBatch;
@@ -118,36 +117,9 @@ namespace Services
 				dataParts = eventData.Split(DATA_SEP_SPLIT, StringSplitOptions.None);
 			}
 
-//			if (eventType == NetworkEvents.GameStartHandshake)
-//			{
-//				m_isOpponenetLoaded = true;
-//
-//				if (m_netStatus == NetworkStatus.LoadingDone)
-//				{
-//					m_netStatus = NetworkStatus.Playing;
-//					string handshakeEvent = (object)NetworkEvents.GameStartHandshake.ToString () + TITLE_SEP + "1";
-//					PhotonNetwork.RaiseEvent (1, handshakeEvent, true, RaiseEventOptions.Default);
-//					ProcessNextUpdate (0.016666667f);
-//					if (m_onStartBattleReady != null)
-//					{
-//						m_onStartBattleReady ();
-//					}
-//				}
-//			}
-//			else
 			if (eventType == NetworkEvents.PlayerConnect)
 			{
-//					m_netStatus = NetworkStatus.Loading;
-//					string content = 
-//						(object)NetworkEvents.PlayerIdentify.ToString () + TITLE_SEP + PlayerId;
-//					PhotonNetwork.RaiseEvent(1, content, true, RaiseEventOptions.Default);
-					NetSpawnEntityType spawnInfo = new NetSpawnEntityType(dataParts[0], 
-																		  TeamID.Enemy, 
-																		  Vector3Parse(dataParts[1]), 
-																		  Vector3Parse(dataParts[2]),
-																		  dataParts[3],
-																		  dataParts[4]);
-					Service.Events.SendEvent (EventId.NetPlayerConnected, spawnInfo);
+					Service.Events.SendEvent (EventId.NetPlayerConnected, null);
 			}
 			if (eventType == NetworkEvents.PlayerIdentify)
 			{
@@ -159,22 +131,9 @@ namespace Services
 																	  dataParts[4]);
 				Service.Events.SendEvent (EventId.NetPlayerIdentified, spawnInfo);
 			}
-//			else if(eventType == NetworkEvents.InitialHandshake)
-//			{
-//				//Generate enemy hero list...
-//				opponents = new List<Entity>();
-//				if(m_netStatus == NetworkStatus.WaitingForOpponent)
-//				{
-//					m_netStatus = NetworkStatus.Loading;
-//					string content = 
-//						(object)NetworkEvents.InitialHandshake.ToString () + TITLE_SEP + PlayerId;
-//					PhotonNetwork.RaiseEvent(1, content, true, RaiseEventOptions.Default);
-//					m_onStartBattleLoad();
-//				}
-//			}
 			else if(eventType == NetworkEvents.PlayerDisconnect)
 			{
-				Service.Events.SendEvent (EventId.NetPlayerDisconnected, null);
+				Service.Events.SendEvent (EventId.NetPlayerDisconnected, dataParts[0]);
 			}
 			else if(eventType == NetworkEvents.PlayerMove)
 			{
@@ -228,29 +187,6 @@ namespace Services
 				Service.Events.SendEvent(EventId.EntityTransformUpdated, transformType);
 			}
 		}
-
-		//Called when the battle has been loaded and we're ready to start our update loop.
-//		public bool GameLoaded(Action onGameStartReady)
-//		{
-//			m_onStartBattleReady = onGameStartReady;
-//
-//			PhotonNetwork.RaiseEvent(1, (object)NetworkEvents.GameStartHandshake.ToString() + TITLE_SEP + "1", true, RaiseEventOptions.Default);
-//			if(m_isOpponenetLoaded)
-//			{
-//				m_netStatus = NetworkStatus.Playing;
-//				ProcessNextUpdate(0.016666667f);
-//				if(m_onStartBattleReady != null)
-//				{
-//					m_onStartBattleReady();
-//					return true;
-//				}
-//			}
-//			else
-//			{
-//				m_netStatus = NetworkStatus.LoadingDone;
-//			}
-//			return false;
-//		}
 
 		//This is the last method called at the end of the update.
 		public void Update()
@@ -342,10 +278,12 @@ namespace Services
 				unitRot.z;
 		}
 
-		public void BroadcastDisconnect()
+		public void BroadcastDisconnect(Entity playerShip)
 		{
 			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;
-			m_eventBatch += NetworkEvents.PlayerDisconnect + TITLE_SEP + "";
+			m_eventBatch += NetworkEvents.PlayerDisconnect + TITLE_SEP + playerShip;
+			// Force an update here since we may be exiting the map and the next update may not fire.
+			Update ();
 		}
 
 		public string Vector3Encode(Vector3 input)
@@ -369,7 +307,6 @@ namespace Services
 			PhotonNetwork.OnEventCall -= OnNetworkEvent;
 
 			m_isInitialized = false;
-//			m_isOpponenetLoaded = false;
 			m_netStatus = NetworkStatus.Loading;
 			
 			opponents = null;

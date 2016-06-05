@@ -2,6 +2,7 @@ namespace Events
 {
 	public enum EventId
 	{
+		ApplicationExit,
 		NetPlayerDisconnected,
 		NetPlayerConnected,
 		NetPlayerIdentified,

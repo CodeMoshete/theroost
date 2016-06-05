@@ -26,20 +26,12 @@ public class EntityController
 		Service.Events.AddListener (EventId.NetPlayerDisconnected, OnPlayerDisconnected);
 		Service.Events.AddListener (EventId.EntitySpawned, OnNetEntitySpawned);
 		Service.Events.AddListener (EventId.EntityTransformUpdated, OnNetTransformUpdated);
+		Service.Events.AddListener (EventId.ApplicationExit, OnApplicationExit);
 	}
 
 	private void OnPlayerConnected(object cookie)
 	{
-		NetSpawnEntityType spawnInfo = (NetSpawnEntityType)cookie;
-		switch (spawnInfo.EntityType)
-		{
-			case EntityType.Ship:
-				ShipEntry entry = typeof(ShipEntry).GetProperty (spawnInfo.EntryName).GetValue (null, null) as ShipEntry;
-				Debug.Log ("Player connected: " + spawnInfo.EntityId);
-				AddShipInternal (entry, spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
-				Service.Network.BroadcastIdentification (localShip);
-				break;
-		}
+		Service.Network.BroadcastIdentification (localShip);
 	}
 
 	private void OnPlayerIdentified(object cookie)
@@ -60,11 +52,11 @@ public class EntityController
 
 	public void OnPlayerDisconnected(object cookie)
 	{
-		NetSpawnEntityType spawnInfo = (NetSpawnEntityType)cookie;
-		if (trackedEntities.ContainsKey (spawnInfo.EntityId))
+		string entityId = (string)cookie;
+		if (trackedEntities.ContainsKey (entityId))
 		{
-			trackedEntities [spawnInfo.EntityId].Unload ();
-			trackedEntities.Remove (spawnInfo.EntityId);
+			trackedEntities [entityId].Unload ();
+			trackedEntities.Remove (entityId);
 		}
 	}
 
@@ -120,6 +112,14 @@ public class EntityController
 		{
 			trackedEntities [moveType.EntityId].Model.transform.position = moveType.Position;
 			trackedEntities [moveType.EntityId].Model.transform.eulerAngles = moveType.Rotation;
+		}
+	}
+
+	private void OnApplicationExit(object cookie)
+	{
+		if (localShip != null)
+		{
+			Service.Network.BroadcastDisconnect (localShip);
 		}
 	}
 }
