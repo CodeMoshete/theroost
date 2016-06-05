@@ -20,6 +20,7 @@ namespace Controllers
 		private VRInteractionControls controls;
 		private SceneLoadedCallback onLoaded;
 		private ShipEntity localShip;
+		private ShipEntry selectedShip;
 
 		private GameObject vrRig;
 		private GameObject leftController;
@@ -31,6 +32,7 @@ namespace Controllers
 		{
 			onLoaded = onLoadedCallback;
 			BattleLoadParams loadParams = (BattleLoadParams)passedParams;
+			selectedShip = loadParams.Ship;
 			controls = new VRInteractionControls ();
 			entityController = new EntityController ();
 			vrRig = GameObject.Find ("[CameraRig]");
@@ -48,8 +50,8 @@ namespace Controllers
 		{
 			Service.FrameUpdate.RegisterForUpdate(this);
 			// TODO: Base this off of player ID rather than IsMaster so we can support more than 2 player positions.
-			Vector3 spawnPos = Service.Network.IsMaster ? new Vector3(0f, 0f, -10f) : new Vector3(0f, 0f, 10f);
-			localShip = entityController.AddLocalShip (ShipEntry.GalaxyClass, spawnPos);
+			Vector3 spawnPos = Service.Network.IsMaster ? new Vector3(0f, 0f, -1.5f) : new Vector3(0f, 0f, 1.5f);
+			localShip = entityController.AddLocalShip (selectedShip, spawnPos);
 			controls.RegisterOnPress (localShip.Model, OnGrabShip);
 		}
 

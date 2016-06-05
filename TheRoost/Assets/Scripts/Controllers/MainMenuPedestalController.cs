@@ -117,6 +117,8 @@ namespace Controllers
 
 		public void Unload()
 		{
+			currentShipModel.Unload ();
+			currentShipModel = null;
 			controls.UnregisterOnPress (startButton, OnStartButtonPressed);
 			controls.UnregisterOnEnter (startButton, OnStartButtonOver);
 			controls.UnregisterOnExit (startButton, OnStartButtonOut);
