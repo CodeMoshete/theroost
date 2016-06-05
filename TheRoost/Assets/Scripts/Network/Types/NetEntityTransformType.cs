@@ -20,9 +20,9 @@ namespace Game.Controllers.Network.Types
 	{
 		public string EntityId { get; private set; }
 		public Vector3 Position { get; private set; }
-		public float Rotation { get; private set; }
+		public Vector3 Rotation { get; private set; }
 		
-		public NetEntityTransformType (string entityId, Vector3 position, float rotation)
+		public NetEntityTransformType (string entityId, Vector3 position, Vector3 rotation)
 		{
 			EntityId = entityId;
 			Position = position;

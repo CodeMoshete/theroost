@@ -16,7 +16,6 @@ public class Engine : MonoBehaviour
 	{
 		gameFlow = new FlowController();
 		gameFlow.StartGame();
-
 		debugCam = new DebugCameraController ();
 	}
 

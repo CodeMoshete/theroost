@@ -1,16 +1,18 @@
 using System;
-using UnityEngine;
-using Game.Controllers.Network.Enums;
 using System.Collections.Generic;
-using Game.Enums;
 using System.Text;
-using Game.Controllers.Network.Types;
-using Models;
 using Events;
+using Game.Controllers.Network.Enums;
+using Game.Controllers.Network.Types;
+using Game.Enums;
+using Models;
+using UnityEngine;
+using Photon;
+using Controllers.Interfaces;
 
 namespace Services
 {
-	public class NetService : MonoBehaviour
+	public class NetService : Photon.PunBehaviour
 	{
 		private enum NetworkStatus
 		{
@@ -65,6 +67,7 @@ namespace Services
 			if(!m_isInitialized)
 			{
 				//Serialize player team
+				PhotonNetwork.logLevel = PhotonLogLevel.Full;
 				m_onStartBattleLoad = startBattleCallback;
 				m_updateStep = 0;
 				m_eventBatch = "";
@@ -74,17 +77,16 @@ namespace Services
 			}
 		}
 
-		public void OnJoinedLobby()
+		public override void OnJoinedLobby()
 		{
 			RoomOptions options = new RoomOptions();
 			options.isOpen = true;
 			options.isVisible = true;
 			PhotonNetwork.JoinOrCreateRoom(ROOM_NAME, options, TypedLobby.Default);
-			
 			PhotonNetwork.OnEventCall += OnNetworkEvent;
 		}
 
-		public void OnJoinedRoom()
+		public override void OnJoinedRoom()
 		{
 			string content = (object)NetworkEvents.InitialHandshake.ToString() + TITLE_SEP + PlayerId;
 			PhotonNetwork.RaiseEvent(1, content, true, RaiseEventOptions.Default);
@@ -145,10 +147,12 @@ namespace Services
 			}
 			else if(eventType == NetworkEvents.PlayerMove)
 			{
-				Vector3 movePos = new Vector3(Convert.ToSingle(dataParts[0]), 
-											  Convert.ToSingle(dataParts[1]), 
-										   	  Convert.ToSingle(dataParts[2]));
-				Service.Events.SendEvent (EventId.EntityMoved, movePos);
+				string entityId = dataParts [0];
+				Vector3 movePos = new Vector3(Convert.ToSingle(dataParts[1]), 
+											  Convert.ToSingle(dataParts[2]), 
+										   	  Convert.ToSingle(dataParts[3]));
+				NetEntityMoveToType evt = new NetEntityMoveToType (entityId, movePos);
+				Service.Events.SendEvent (EventId.EntityMoved, evt);
 			}
 			else if(eventType == NetworkEvents.EntityHealth)
 			{
@@ -192,8 +196,10 @@ namespace Services
 				Vector3 pos = new Vector3(Convert.ToSingle(dataParts[1]), 
 										  Convert.ToSingle(dataParts[2]), 
 										  Convert.ToSingle(dataParts[3]));
-				float rotation = Convert.ToSingle(dataParts[4]);
-				NetEntityTransformType transformType = new NetEntityTransformType(unitId, pos, rotation);
+				Vector3 rot = new Vector3(Convert.ToSingle(dataParts[4]), 
+									   	  Convert.ToSingle(dataParts[5]), 
+										  Convert.ToSingle(dataParts[6]));
+				NetEntityTransformType transformType = new NetEntityTransformType(unitId, pos, rot);
 				Service.Events.SendEvent(EventId.EntityTransformUpdated, transformType);
 			}
 		}
@@ -222,10 +228,10 @@ namespace Services
 		}
 
 		//This is the last method called at the end of the update.
-		public void SyncUpdateStep()
+		public void Update()
 		{
 			//Only send an event if there is data in the eventBatch
-			if(m_eventBatch != "")
+			if(m_isInitialized && m_eventBatch != "")
 			{
 				m_updateStep++;
 				m_localStepTime = Time.realtimeSinceStartup - m_lastUpdateTime;
@@ -240,10 +246,14 @@ namespace Services
 			m_lastUpdateTime = Time.realtimeSinceStartup;
 		}
 
-		public void BroadcastPlayerMove(Vector3 moveTarget)
+		public void BroadcastPlayerMove(string entityId, Vector3 moveTarget)
 		{
 			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;
-			m_eventBatch += NetworkEvents.PlayerMove.ToString() + TITLE_SEP + moveTarget.x.ToString() + DATA_SEP + moveTarget.y.ToString() + DATA_SEP + moveTarget.z.ToString();
+			m_eventBatch += NetworkEvents.PlayerMove.ToString() + TITLE_SEP + 
+							entityId + DATA_SEP + 
+							moveTarget.x.ToString() + DATA_SEP +
+							moveTarget.y.ToString() + DATA_SEP + 
+							moveTarget.z.ToString();
 		}
 
 		public void BroadcastPlayerAbility(string abilityVoId)
@@ -283,9 +293,17 @@ namespace Services
 
 		public void BroadcastCurrentTransform(Entity unit)
 		{
-//			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;
-//			Vector3 unitPos = unit.CharacterGO.transform.position;
-//			m_eventBatch += NetworkEvents.EntityAtPosition.ToString() + TITLE_SEP + unit.EntityID + DATA_SEP + unitPos.x + DATA_SEP + unitPos.y + DATA_SEP + unitPos.z + DATA_SEP + unit.CharacterGO.transform.eulerAngles.y;
+			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;
+			Vector3 unitPos = unit.Model.transform.position;
+			Vector3 unitRot = unit.Model.transform.eulerAngles;
+			m_eventBatch += NetworkEvents.EntityAtPosition.ToString() + TITLE_SEP + 
+				unit.Id + DATA_SEP + 
+				unitPos.x + DATA_SEP + 
+				unitPos.y + DATA_SEP + 
+				unitPos.z + DATA_SEP + 
+				unitRot.x + DATA_SEP + 
+				unitRot.y + DATA_SEP + 
+				unitRot.z;
 		}
 
 		public void BroadcastDisconnect()

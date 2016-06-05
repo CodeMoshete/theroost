@@ -7,7 +7,7 @@ using Events;
 using Game.Controllers.Network.Types;
 using Game.Enums;
 
-public class EntityLoadController
+public class EntityController
 {
 	private const string SHIP_PREFIX = "s*";
 	private const string USER_PREFIX = "u*";
@@ -15,12 +15,12 @@ public class EntityLoadController
 	private Dictionary<string, int> localEntityTypeCounts;
 	private Dictionary<string, Entity> trackedEntities;
 
-	public EntityLoadController()
+	public EntityController()
 	{
 		localEntityTypeCounts = new Dictionary<string, int> ();
 		trackedEntities = new Dictionary<string, Entity> ();
 		Service.Events.AddListener (EventId.EntitySpawned, OnNetEntitySpawned);
-		Service.Events.AddListener (EventId.EntityMoved, OnNetEntityMoved);
+		Service.Events.AddListener (EventId.EntityTransformUpdated, OnNetTransformUpdated);
 	}
 
 	public void AddEntity()
@@ -48,7 +48,7 @@ public class EntityLoadController
 	private ShipEntity AddShipInternal(ShipEntry ship, Vector3 spawnPos, Vector3 spawnRot, string uid)
 	{
 		ShipEntity entity = new ShipEntity (ship, uid, spawnPos, spawnRot);
-		trackedEntities.Add (entity);
+		trackedEntities.Add (entity.Id, entity);
 		Service.Network.BroadcastEntitySpawned (entity);
 		return entity;
 	}
@@ -65,8 +65,13 @@ public class EntityLoadController
 		}
 	}
 
-	private void OnNetEntityMoved(object cookie)
+	private void OnNetTransformUpdated(object cookie)
 	{
-
+		NetEntityTransformType moveType = (NetEntityTransformType)cookie;
+		if (trackedEntities.ContainsKey (moveType.EntityId))
+		{
+			trackedEntities [moveType.EntityId].Model.transform.position = moveType.Position;
+			trackedEntities [moveType.EntityId].Model.transform.eulerAngles = moveType.Rotation;
+		}
 	}
 }
