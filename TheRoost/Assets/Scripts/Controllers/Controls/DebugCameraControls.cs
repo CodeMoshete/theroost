@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Services;
+using Events;
 
 namespace HammerEditor.Main.Cameras.ControlSystems
 {
@@ -160,8 +162,13 @@ namespace HammerEditor.Main.Cameras.ControlSystems
 			float scrollAmt = Input.GetAxis("Mouse ScrollWheel");
             if (scrollAmt != 0f && canScroll)
             {
-                Vector3 fwdSpeed = new Vector3(0f, 0f, speedMult * scrollAmt);
-                transform.Translate(fwdSpeed);
+				VRTouchpadInteraction fakePress = 
+					new VRTouchpadInteraction(transform.gameObject, Vector2.zero);
+				Service.Events.SendEvent (EventId.VRControllerTouchpadPress, fakePress);
+
+				VRTouchpadInteraction fakeDrag = 
+					new VRTouchpadInteraction(transform.gameObject, new Vector2(0f, scrollAmt));
+				Service.Events.SendEvent (EventId.VRControllerTouchpadDrag, fakeDrag);
             }
         }
         

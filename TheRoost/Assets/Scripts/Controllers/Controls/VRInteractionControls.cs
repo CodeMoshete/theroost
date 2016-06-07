@@ -17,16 +17,28 @@ namespace Controllers.Controls
 		private Dictionary<GameObject, List<Action>> enterInteractions;
 		private Dictionary<GameObject, List<Action>> exitInteractions;
 
+		private Dictionary<GameObject, List<Action<Vector2>>> touchPressInteractions;
+		private Dictionary<GameObject, List<Action<Vector2>>> touchDragInteractions;
+		private Dictionary<GameObject, List<Action>> touchReleaseInteractions;
+
 		public VRInteractionControls()
 		{
 			pressInteractions = new Dictionary<GameObject, List<Action>> ();
 			enterInteractions = new Dictionary<GameObject, List<Action>> ();
 			exitInteractions = new Dictionary<GameObject, List<Action>> ();
+
+			touchPressInteractions = new Dictionary<GameObject, List<Action<Vector2>>> ();
+			touchDragInteractions = new Dictionary<GameObject, List<Action<Vector2>>> ();
+			touchReleaseInteractions = new Dictionary<GameObject, List<Action>> ();
+
 			hoverButtons = new Dictionary<SteamVR_Controller.Device, GameObject> ();
 			Service.Events.AddListener (EventId.VRHandCollisionEnter, OnHandEnter);
 			Service.Events.AddListener (EventId.VRHandCollisionExit, OnHandExit);
 			Service.Events.AddListener (EventId.VRControllerTriggerPress, OnTriggerPress);
 			Service.Events.AddListener (EventId.VRControllerTriggerPress, OnTriggerRelease);
+			Service.Events.AddListener (EventId.VRControllerTouchpadPress, OnTouchpadPress);
+			Service.Events.AddListener (EventId.VRControllerTouchpadDrag, OnTouchpadDrag);
+			Service.Events.AddListener (EventId.VRControllerTouchpadRelease, OnTouchpadRelease);
 		}
 
 		public void RegisterOnPress(GameObject target, Action callback)
@@ -77,6 +89,57 @@ namespace Controllers.Controls
 			if (exitInteractions.ContainsKey (target) && exitInteractions[target].Contains(callback))
 			{
 				exitInteractions[target].Remove (callback);
+			}
+		}
+
+		public void RegisterOnTouchPress(GameObject target, Action<Vector2> callback)
+		{
+			if (!touchPressInteractions.ContainsKey (target))
+			{
+				touchPressInteractions.Add (target, new List<Action<Vector2>>());
+			}
+			touchPressInteractions [target].Add (callback);
+		}
+
+		public void UnregisterOnTouchPress(GameObject target, Action<Vector2> callback)
+		{
+			if (touchPressInteractions.ContainsKey (target) && touchPressInteractions[target].Contains(callback))
+			{
+				touchPressInteractions[target].Remove (callback);
+			}
+		}
+
+		public void RegisterOnTouchDrag(GameObject target, Action<Vector2> callback)
+		{
+			if (!touchDragInteractions.ContainsKey (target))
+			{
+				touchDragInteractions.Add (target, new List<Action<Vector2>>());
+			}
+			touchDragInteractions [target].Add (callback);
+		}
+
+		public void UnregisterOnTouchDrag(GameObject target, Action<Vector2> callback)
+		{
+			if (touchDragInteractions.ContainsKey (target) && touchDragInteractions[target].Contains(callback))
+			{
+				touchDragInteractions[target].Remove (callback);
+			}
+		}
+
+		public void RegisterOnTouchRelease(GameObject target, Action callback)
+		{
+			if (!touchReleaseInteractions.ContainsKey (target))
+			{
+				touchReleaseInteractions.Add (target, new List<Action>());
+			}
+			touchReleaseInteractions [target].Add (callback);
+		}
+
+		public void UnregisterOnTouchRelease(GameObject target, Action callback)
+		{
+			if (touchReleaseInteractions.ContainsKey (target) && touchReleaseInteractions[target].Contains(callback))
+			{
+				touchReleaseInteractions[target].Remove (callback);
 			}
 		}
 
@@ -151,6 +214,42 @@ namespace Controllers.Controls
 			// Do nothing for now...
 		}
 
+		private void OnTouchpadPress(object cookie)
+		{
+			VRTouchpadInteraction touch = (VRTouchpadInteraction)cookie;
+			if (touchPressInteractions.ContainsKey (touch.ControllerObject))
+			{
+				for (int i = 0, ct = touchPressInteractions[touch.ControllerObject].Count; i < ct; i++)
+				{
+					touchPressInteractions [touch.ControllerObject] [i] (touch.TouchPosition);
+				}
+			}
+		}
+
+		private void OnTouchpadDrag(object cookie)
+		{
+			VRTouchpadInteraction touch = (VRTouchpadInteraction)cookie;
+			if (touchDragInteractions.ContainsKey (touch.ControllerObject))
+			{
+				for (int i = 0, ct = touchDragInteractions[touch.ControllerObject].Count; i < ct; i++)
+				{
+					touchDragInteractions [touch.ControllerObject] [i] (touch.TouchPosition);
+				}
+			}
+		}
+
+		private void OnTouchpadRelease(object cookie)
+		{
+			VRTouchpadInteraction touch = (VRTouchpadInteraction)cookie;
+			if (touchReleaseInteractions.ContainsKey (touch.ControllerObject))
+			{
+				for (int i = 0, ct = touchReleaseInteractions[touch.ControllerObject].Count; i < ct; i++)
+				{
+					touchReleaseInteractions [touch.ControllerObject] [i] ();
+				}
+			}
+		}
+
 		public void Unload()
 		{
 			pressInteractions = null;
@@ -159,6 +258,9 @@ namespace Controllers.Controls
 			Service.Events.RemoveListener (EventId.VRHandCollisionExit, OnHandExit);
 			Service.Events.RemoveListener (EventId.VRControllerTriggerPress, OnTriggerPress);
 			Service.Events.RemoveListener (EventId.VRControllerTriggerPress, OnTriggerRelease);
+			Service.Events.RemoveListener (EventId.VRControllerTouchpadPress, OnTouchpadPress);
+			Service.Events.RemoveListener (EventId.VRControllerTouchpadDrag, OnTouchpadDrag);
+			Service.Events.RemoveListener (EventId.VRControllerTouchpadRelease, OnTouchpadRelease);
 		}
 	}
 }

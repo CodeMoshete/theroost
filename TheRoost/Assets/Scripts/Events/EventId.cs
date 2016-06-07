@@ -16,6 +16,9 @@ namespace Events
 		VRControllerPulse,
 		VRControllerTriggerPress,
 		VRControllerTriggerRelease,
+		VRControllerTouchpadPress,
+		VRControllerTouchpadDrag,
+		VRControllerTouchpadRelease,
 		DebugCameraControlsActive
 	}
 }

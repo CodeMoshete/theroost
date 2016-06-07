@@ -2,12 +2,14 @@
 using System.Collections;
 using Services;
 using Events;
+using Game.Enums;
 
 namespace Monobehaviors
 {
 	public class VRControllerInterface : MonoBehaviour 
 	{
 		private SteamVR_TrackedObject controller;
+		private bool isTouchDown;
 
 		public void Start()
 		{
@@ -18,11 +20,35 @@ namespace Monobehaviors
 		{
 			SteamVR_Controller.Device ctrl = SteamVR_Controller.Input ((int)controller.index);
 
+			// Handle trigger input
 			if (ctrl.GetPressDown (SteamVR_Controller.ButtonMask.Trigger))
 				Service.Events.SendEvent (EventId.VRControllerTriggerPress, ctrl);
 
 			if (ctrl.GetPressUp (SteamVR_Controller.ButtonMask.Trigger))
 				Service.Events.SendEvent (EventId.VRControllerTriggerRelease, ctrl);
+
+			// Handle touchpad input
+			VRTouchpadInteraction touch;
+			if (ctrl.GetTouch (Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad))
+			{
+				if (!isTouchDown)
+				{
+					touch = new VRTouchpadInteraction (gameObject, ctrl.GetAxis ());
+					Service.Events.SendEvent(EventId.VRControllerTouchpadPress, touch);
+					isTouchDown = true;
+				}
+				else
+				{
+					touch = new VRTouchpadInteraction (gameObject, ctrl.GetAxis ());
+					Service.Events.SendEvent(EventId.VRControllerTouchpadDrag, touch);
+				}
+			}
+			else if(isTouchDown)
+			{
+				touch = new VRTouchpadInteraction (gameObject, ctrl.GetAxis ());
+				Service.Events.SendEvent(EventId.VRControllerTouchpadRelease, touch);
+				isTouchDown = false;
+			}
 		}
 
 		public void OnTriggerEnter(Collider other)
