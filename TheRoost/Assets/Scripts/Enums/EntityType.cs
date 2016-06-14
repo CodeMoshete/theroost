@@ -2,7 +2,8 @@ namespace Game.Enums
 {
 	public enum EntityType
 	{
-		Ship
+		Ship,
+		TargetingRig
 	}
 }
 

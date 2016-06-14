@@ -45,7 +45,7 @@ namespace Controllers
 			// TODO: Base this off of player ID rather than IsMaster so we can support more than 2 player positions.
 			Vector3 spawnPos = Service.Network.IsMaster ? new Vector3(0f, 1f, 1.5f) : new Vector3(0f, 1f, -1.5f);
 			localShip = entityController.AddLocalShip (selectedShip, spawnPos);
-			battleControls = new VRShipBattleControls (localShip);
+			battleControls = new VRShipBattleControls (localShip, entityController);
 		}
 
 		public void Update(float dt)

@@ -11,6 +11,7 @@ public class EntityController
 {
 	private const string SHIP_PREFIX = "s*";
 	private const string USER_PREFIX = "u*";
+	private const string TARGET_RIG_PREFIX = "t*";
 
 	private Dictionary<string, int> localEntityTypeCounts;
 	private Dictionary<string, Entity> trackedEntities;
@@ -85,10 +86,25 @@ public class EntityController
 		return localShip;
 	}
 
+	public TargetingEntity AddLocalTargetingEntity(GameObject aimingController)
+	{
+		string uid = USER_PREFIX + Service.Network.PlayerId + TARGET_RIG_PREFIX + "1";
+		return AddTargetingEntityInternal (aimingController.transform.position, 
+			aimingController.transform.eulerAngles, 
+			uid);
+	}
+
 	private ShipEntity AddShipInternal(ShipEntry ship, Vector3 spawnPos, Vector3 spawnRot, string uid)
 	{
 		ShipEntity entity = new ShipEntity (ship, uid, spawnPos, spawnRot);
 		trackedEntities.Add (entity.Id, entity);
+		return entity;
+	}
+
+	private TargetingEntity AddTargetingEntityInternal(Vector3 spawnPos, Vector3 spawnRot, string uid)
+	{
+		TargetingEntity entity = new TargetingEntity (uid, spawnPos, spawnRot);
+		trackedEntities.Add (uid, entity);
 		return entity;
 	}
 
@@ -101,6 +117,10 @@ public class EntityController
 				ShipEntry entry = typeof(ShipEntry).GetProperty (spawnInfo.EntryName).GetValue (null, null) as ShipEntry;
 				Debug.Log ("theirs: " + spawnInfo.EntityId);
 				AddShipInternal (entry, spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
+				break;
+			case EntityType.TargetingRig:
+				Debug.Log ("their targeting reticle added: " + spawnInfo.EntityId);
+				AddTargetingEntityInternal (spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
 				break;
 		}
 	}

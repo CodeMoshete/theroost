@@ -13,21 +13,25 @@ namespace Controllers.Controls
 			new Quaternion (0.004537996f, -0.9590314f, -0.2831307f, 0.008671289f);
 
 		private VRInteractionControls controls;
+		private EntityController entityController;
 		private GameObject leftController;
 		private GameObject rightController;
 		private GameObject shipController;
+		private GameObject aimingController;
 		private GameObject vrRig;
 		private ShipEntity localShip;
+		private TargetingEntity targetingEntity;
 		private GameObject spaceDust;
 		private bool shipIsGrabbed;
 
 		private float lastScrollYVal;
 		private float currentVelocityMult;
 
-		public VRShipBattleControls(ShipEntity localShip)
+		public VRShipBattleControls(ShipEntity localShip, EntityController entityController)
 		{
 			controls = new VRInteractionControls ();
 			this.localShip = localShip;
+			this.entityController = entityController;
 			spaceDust = GameObject.Instantiate (Resources.Load<GameObject>("Models/DustParticles"));
 			controls.RegisterOnPress (localShip.Model, OnGrabShip);
 
@@ -72,6 +76,11 @@ namespace Controllers.Controls
 					debugCamera.transform.position = pos;
 				}
 				Service.Network.BroadcastCurrentTransform (localShip);
+
+				if (targetingEntity != null)
+				{
+					Service.Network.BroadcastCurrentTransform (targetingEntity);
+				}
 			}
 		}
 
@@ -89,6 +98,12 @@ namespace Controllers.Controls
 				localShip.Model.transform.localPosition = SHIP_GRAB_POS;
 				localShip.Model.transform.localRotation = SHIP_GRAB_ROT;
 				shipIsGrabbed = true;
+
+				aimingController = lDist < rDist ? rightController : leftController;
+				targetingEntity = entityController.AddLocalTargetingEntity (aimingController);
+				targetingEntity.Model.transform.SetParent(aimingController.transform);
+				targetingEntity.Model.transform.localPosition = Vector3.zero;
+				targetingEntity.Model.transform.localEulerAngles = Vector3.zero;
 
 				controls.RegisterOnTouchPress (shipController, OnAccelerateTouch);
 				controls.RegisterOnTouchDrag (shipController, OnAccelerateDrag);
