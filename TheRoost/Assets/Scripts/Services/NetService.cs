@@ -251,6 +251,19 @@ namespace Services
 							entity.EntryName;
 		}
 
+		public void BroadcastEntityAttack(Entity sourceEntity, 
+			Entity reticleEntity, 
+			Vector3 localSpawnPos, 
+			ProjectileEntry projectile)
+		{
+			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;
+			m_eventBatch += NetworkEvents.EntityAttacked + TITLE_SEP +
+				sourceEntity.Id + DATA_SEP +
+				reticleEntity.Id + DATA_SEP +
+				Vector3Encode (localSpawnPos) + DATA_SEP +
+				projectile.ToString();
+		}
+
 		public void BroadcastEntityHealthChanged(string entityId, string enemyEntityId, float health)
 		{
 			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;

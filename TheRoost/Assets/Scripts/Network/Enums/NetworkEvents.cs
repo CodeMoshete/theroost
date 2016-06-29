@@ -32,7 +32,8 @@ namespace Game.Controllers.Network.Enums
 		EntityDeath,
 		EntitySpawned,
 		EntityMoved,
-		EntityAtPosition
+		EntityAtPosition,
+		EntityAttacked
 	}
 }
 
