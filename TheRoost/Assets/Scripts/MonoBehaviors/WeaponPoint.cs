@@ -27,7 +27,7 @@ namespace MonoBehaviors
 			{
 				if (FieldOfAttack > 0f && cachedDotFieldOfAttack == 0f)
 				{
-					cachedDotFieldOfAttack = Mathf.Cos (FieldOfAttack * Mathf.Rad2Deg);
+					cachedDotFieldOfAttack = Mathf.Cos (FieldOfAttack * Mathf.Deg2Rad);
 				}
 				return cachedDotFieldOfAttack;
 			}

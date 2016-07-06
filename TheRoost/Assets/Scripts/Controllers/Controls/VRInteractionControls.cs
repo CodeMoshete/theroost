@@ -197,7 +197,8 @@ namespace Controllers.Controls
 
 		private void OnTriggerPress(object cookie)
 		{
-			SteamVR_Controller.Device device = (SteamVR_Controller.Device)cookie;
+			VRTriggerInteraction interaction = (VRTriggerInteraction)cookie;
+			SteamVR_Controller.Device device = interaction.Controller;
 			if (hoverButtons.ContainsKey (device) && 
 				hoverButtons [device] != null && 
 				pressInteractions.ContainsKey(hoverButtons[device]))

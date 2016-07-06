@@ -55,13 +55,21 @@ namespace Controllers
 					currentHoverObject = null;
 				}
 
+				VRTriggerInteraction triggerInteraction;
 				if (currentHoverObject != null && Input.GetMouseButtonDown (0))
 				{
-					Service.Events.SendEvent (EventId.VRControllerTriggerPress, mouseDevice);
+					triggerInteraction = new VRTriggerInteraction(mouseDevice, currentHoverObject.gameObject);
+					Service.Events.SendEvent (EventId.VRControllerTriggerPress, triggerInteraction);
 				}
 				else if (currentHoverObject != null && Input.GetMouseButtonUp (0))
 				{
-					Service.Events.SendEvent (EventId.VRControllerTriggerRelease, mouseDevice);
+					triggerInteraction = new VRTriggerInteraction(mouseDevice, currentHoverObject.gameObject);
+					Service.Events.SendEvent (EventId.VRControllerTriggerRelease, triggerInteraction);
+				}
+				else if(currentHoverObject == null)
+				{
+					triggerInteraction = new VRTriggerInteraction(mouseDevice, null);
+					Service.Events.SendEvent (EventId.VRControllerTriggerRelease, triggerInteraction);
 				}
 			}
 		}

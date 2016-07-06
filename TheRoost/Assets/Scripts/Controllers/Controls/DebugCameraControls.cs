@@ -6,8 +6,8 @@ namespace HammerEditor.Main.Cameras.ControlSystems
 {
     public class DebugCameraControls
     {
-        private readonly Vector3 CAM_START_POS = new Vector3(15f, 11f, 12f);
-        private readonly Vector3 CAM_START_ROT = new Vector3(35f, 225f, 0f);
+        private readonly Vector3 CAM_START_POS = new Vector3(0f, 1.3f, 1.2f);
+        private readonly Vector3 CAM_START_ROT = new Vector3(25f, 185f, 0f);
         private const string ORBIT_CONTAINER_NAME = "OrbitContainer";
         private const float MOVE_SPEED = 0.1f;
         private const float MOVE_SPEED_MULT = 3f;
@@ -76,6 +76,15 @@ namespace HammerEditor.Main.Cameras.ControlSystems
                 ClearCamTarget();
             }
             
+			if(Input.GetKeyDown(KeyCode.T))
+			{
+				VRTouchpadInteraction interactionPress = new VRTouchpadInteraction(transform.gameObject, Vector2.zero);
+				Service.Events.SendEvent(EventId.VRControllerTouchpadPress, interactionPress);
+
+				VRTouchpadInteraction interactionRelease = new VRTouchpadInteraction(transform.gameObject, Vector2.one);
+				Service.Events.SendEvent(EventId.VRControllerTouchpadRelease, interactionRelease);
+			}
+
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 speedMult = MOVE_SPEED_MULT;

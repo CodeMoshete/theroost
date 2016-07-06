@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using MonoBehaviors;
 
 namespace Models.Interfaces
 {
 	public interface IProjectile 
 	{
-		void Initialize(ProjectileEntry template);
-		void Fire (ShipEntity source, Vector3 startPosition, Vector3 startEuler);
+		string Uid { get; }
+		void Initialize(string uid, ProjectileEntry template, Action<IProjectile> onDestroy, bool isLocal);
+		void Fire (ShipEntity source, WeaponPoint weapon, TargetingEntity targetEntity);
+		void Update (float dt);
 		void Unload ();
 	}
 }

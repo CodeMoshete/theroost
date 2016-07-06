@@ -55,6 +55,8 @@ namespace Controllers
 			{
 				battleControls.Update ();
 			}
+
+			entityController.Update(dt);
 		}
 
 		public void Unload()

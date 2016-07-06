@@ -12,6 +12,7 @@ namespace Events
 		EntityHealthUpdate,
 		EntityMoved,
 		EntityFired,
+		EntityFiredLocal,
 		EntityTransformUpdated,
 		VRHandCollisionEnter,
 		VRHandCollisionExit,

@@ -1,24 +1,72 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Models.Interfaces;
+using System;
+using MonoBehaviors;
 
 namespace Models.Projectiles
 {
-	public class GenericBeam : IProjectile
+	public class GenericBeam : BaseProjectile
 	{
-		public void Initialize(ProjectileEntry template)
-		{
+		private const float DECAY_TIME_TOTAL = 0.25f;
 
+		private float decayTimeLeft;
+		private bool isDecaying;
+		private TargetingEntity targetEntity;
+		private Vector3 currentScale;
+		private WeaponPoint weaponPoint;
+
+		public override void Initialize(
+			string uid, 
+			ProjectileEntry template, 
+			Action<IProjectile> onDestroy, 
+			bool isLocal)
+		{
+			base.Initialize(uid, template, onDestroy, isLocal);
+			currentScale = Vector3.one;
 		}
 
-		public void Fire (ShipEntity source, Vector3 startPosition, Vector3 startEuler)
+		public override void Fire (ShipEntity source, WeaponPoint weapon, TargetingEntity targetEntity)
 		{
-
+			weaponPoint = weapon;
+			this.targetEntity = targetEntity;
+			lifetimeLeft = projectileData.Lifetime;
+			model.transform.position = weapon.transform.position;
+			model.transform.parent = source.Model.transform;
+			model.transform.LookAt(targetEntity.AimPosition);
 		}
 
-		public void Unload ()
+		public override void Update(float dt)
 		{
+			if(!isDecaying)
+			{
+				model.transform.LookAt(targetEntity.AimPosition);
+				model.transform.localScale = currentScale;
+				currentScale.z += projectileData.MoveSpeed;
+				lifetimeLeft -= dt;
 
+				Vector3 vecToTarget = (targetEntity.AimPosition - weaponPoint.transform.position).normalized;
+				float dotTest = Vector3.Dot(weaponPoint.LookDirection, vecToTarget);
+
+				if(lifetimeLeft <= 0f || dotTest < weaponPoint.DotFieldOfAttack)
+				{
+					isDecaying = true;
+					decayTimeLeft = DECAY_TIME_TOTAL;
+				}
+			}
+			else
+			{
+				float xyScale = Mathf.Lerp(0f, 1f, decayTimeLeft / DECAY_TIME_TOTAL);
+				currentScale.x = xyScale;
+				currentScale.y = xyScale;
+				model.transform.localScale = currentScale;
+				decayTimeLeft -= dt;
+
+				if(decayTimeLeft <= 0f)
+				{
+					onDestroy(this);
+				}
+			}
 		}
 	}
 }

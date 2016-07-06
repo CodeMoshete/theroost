@@ -3,12 +3,14 @@ using System.Collections;
 using Models;
 using Services;
 using Utils;
+using Events;
 
 namespace Controllers.Controls
 {
 	public class VRShipBattleControls
 	{
 		private readonly Vector3 SHIP_GRAB_POS = new Vector3 (0f, -0.125f, 0.235f);
+		private readonly Vector3 SHIP_DEBUG_POS = new Vector3 (0f, 0f, 1.25f);
 		private readonly Quaternion SHIP_GRAB_ROT = 
 			new Quaternion (0.004537996f, -0.9590314f, -0.2831307f, 0.008671289f);
 
@@ -74,6 +76,10 @@ namespace Controllers.Controls
 					Vector3 pos = debugCamera.transform.position;
 					pos += moveDirection;
 					debugCamera.transform.position = pos;
+
+					Ray camRay = debugCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+					Vector3 lookPt = debugCamera.transform.position + (camRay.direction * 40f);
+					targetingEntity.Model.transform.LookAt(lookPt);
 				}
 				Service.Network.BroadcastCurrentTransform (localShip);
 
@@ -123,8 +129,34 @@ namespace Controllers.Controls
 					controls.RegisterOnTouchPress (debugCamera, OnAccelerateTouch);
 					controls.RegisterOnTouchDrag (debugCamera, OnAccelerateDrag);
 					shipIsGrabbed = true;
+
+					targetingEntity = entityController.AddLocalTargetingEntity (debugCamera);
+					targetingEntity.Model.transform.SetParent(debugCamera.transform);
+					targetingEntity.Model.transform.localPosition = SHIP_DEBUG_POS;
+					targetingEntity.Model.transform.localEulerAngles = Vector3.zero;
 				}
 			}
+			controls.UnregisterOnPress(localShip.Model, OnGrabShip);
+			Service.Events.AddListener(EventId.VRControllerTriggerPress, OnFire);
+			Service.Events.AddListener(EventId.VRControllerTouchpadPress, OnSwitchWeapons);
+		}
+
+		private void OnFire(object cookie)
+		{
+			VRTriggerInteraction interaction = (VRTriggerInteraction)cookie;
+			if(interaction.ControllerObject == aimingController || vrRig == null || !vrRig.activeSelf)
+			{
+				localShip.Fire(targetingEntity.AimPosition, targetingEntity);
+			}
+		}
+
+		private void OnSwitchWeapons(object cookie)
+		{
+			VRTouchpadInteraction interaction = (VRTouchpadInteraction)cookie;
+			if(interaction.ControllerObject == aimingController || vrRig == null || !vrRig.activeSelf)
+			{
+				localShip.SwitchWeapons(1);
+			}	
 		}
 
 		private void OnAccelerateTouch(Vector2 touchPos)

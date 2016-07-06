@@ -1,24 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Models.Interfaces;
+using System;
+using MonoBehaviors;
 
 namespace Models.Projectiles
 {
-	public class GenericProjectile : IProjectile
+	public class GenericProjectile : BaseProjectile
 	{
-		public void Initialize(ProjectileEntry template)
+		public override void Fire (ShipEntity source, WeaponPoint weapon, TargetingEntity targetEntity)
 		{
-
+			lifetimeLeft = projectileData.Lifetime;
+			model.transform.position = weapon.transform.position;
+			model.transform.LookAt(targetEntity.AimPosition);
 		}
 
-		public void Fire (ShipEntity source, Vector3 startPosition, Vector3 startEuler)
+		public override void Update(float dt)
 		{
-
-		}
-
-		public void Unload ()
-		{
-
+			model.transform.Translate(0f, 0f, projectileData.MoveSpeed);
+			lifetimeLeft -= dt;
+			if(lifetimeLeft <= 0f)
+			{
+				onDestroy(this);
+			}
 		}
 	}
 }

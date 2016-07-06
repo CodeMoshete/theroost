@@ -22,10 +22,16 @@ namespace Monobehaviors
 
 			// Handle trigger input
 			if (ctrl.GetPressDown (SteamVR_Controller.ButtonMask.Trigger))
-				Service.Events.SendEvent (EventId.VRControllerTriggerPress, ctrl);
+			{
+				VRTriggerInteraction interaction = new VRTriggerInteraction(ctrl, gameObject);
+				Service.Events.SendEvent (EventId.VRControllerTriggerPress, interaction);
+			}
 
 			if (ctrl.GetPressUp (SteamVR_Controller.ButtonMask.Trigger))
-				Service.Events.SendEvent (EventId.VRControllerTriggerRelease, ctrl);
+			{
+				VRTriggerInteraction interaction = new VRTriggerInteraction(ctrl, gameObject);
+				Service.Events.SendEvent (EventId.VRControllerTriggerRelease, interaction);
+			}
 
 			// Handle touchpad input
 			VRTouchpadInteraction touch;

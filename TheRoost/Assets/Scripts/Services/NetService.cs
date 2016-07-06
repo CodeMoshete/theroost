@@ -9,6 +9,7 @@ using Models;
 using UnityEngine;
 using Photon;
 using Controllers.Interfaces;
+using MonoBehaviors;
 
 namespace Services
 {
@@ -16,6 +17,7 @@ namespace Services
 	{
 		private enum NetworkStatus
 		{
+			Disconnected,
 			WaitingForOpponent,
 			Loading,
 			LoadingDone,
@@ -74,6 +76,16 @@ namespace Services
 				m_isInitialized = true;
 				PhotonNetwork.ConnectUsingSettings("0.01");
 			}
+		}
+
+		public override void OnFailedToConnectToPhoton (DisconnectCause cause)
+		{
+			m_netStatus = NetworkStatus.Disconnected;
+			if (m_onStartBattleLoad != null)
+			{
+				m_onStartBattleLoad ();
+			}
+			base.OnFailedToConnectToPhoton (cause);
 		}
 
 		public override void OnJoinedLobby()
@@ -186,18 +198,28 @@ namespace Services
 				NetEntityTransformType transformType = new NetEntityTransformType(unitId, pos, rot);
 				Service.Events.SendEvent(EventId.EntityTransformUpdated, transformType);
 			}
+			else if(eventType == NetworkEvents.EntityAttacked)
+			{
+				NetEntityAttackType attackType = 
+					new NetEntityAttackType(dataParts[0], dataParts[1], dataParts[2], dataParts[4], dataParts[3]);
+				Service.Events.SendEvent(EventId.EntityFired, attackType);
+			}
 		}
 
 		//This is the last method called at the end of the update.
 		public void Update()
 		{
 			//Only send an event if there is data in the eventBatch
-			if(m_isInitialized && m_eventBatch != "")
+			if(m_isInitialized && m_netStatus != NetworkStatus.Disconnected && m_eventBatch != "")
 			{
 				m_updateStep++;
 				m_localStepTime = Time.realtimeSinceStartup - m_lastUpdateTime;
 				m_eventBatch += EVENT_SEP + NetworkEvents.UpdateSync.ToString() + TITLE_SEP + m_updateStep + DATA_SEP + m_localStepTime;
 				PhotonNetwork.RaiseEvent(1, (object)m_eventBatch, true, RaiseEventOptions.Default);
+				m_eventBatch = "";
+			}
+			else
+			{
 				m_eventBatch = "";
 			}
 		}
@@ -251,17 +273,20 @@ namespace Services
 							entity.EntryName;
 		}
 
-		public void BroadcastEntityAttack(Entity sourceEntity, 
+		public void BroadcastEntityAttack(
+			string projectileId,
+			Entity sourceEntity, 
 			Entity reticleEntity, 
-			Vector3 localSpawnPos, 
+			WeaponPoint weaponPoint, 
 			ProjectileEntry projectile)
 		{
 			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;
 			m_eventBatch += NetworkEvents.EntityAttacked + TITLE_SEP +
+				projectileId + DATA_SEP +
 				sourceEntity.Id + DATA_SEP +
 				reticleEntity.Id + DATA_SEP +
-				Vector3Encode (localSpawnPos) + DATA_SEP +
-				projectile.ToString();
+				weaponPoint.gameObject.name + DATA_SEP +
+				projectile.ClassName;
 		}
 
 		public void BroadcastEntityHealthChanged(string entityId, string enemyEntityId, float health)
