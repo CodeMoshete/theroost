@@ -173,9 +173,11 @@ public class EntityController
 	public TargetingEntity AddLocalTargetingEntity(GameObject aimingController)
 	{
 		string uid = USER_PREFIX + Service.Network.PlayerId + TARGET_RIG_PREFIX + "1";
-		return AddTargetingEntityInternal (aimingController.transform.position, 
+		TargetingEntity entity = AddTargetingEntityInternal (aimingController.transform.position, 
 			aimingController.transform.eulerAngles, 
 			uid);
+		Service.Network.BroadcastEntitySpawned(entity);
+		return entity;
 	}
 
 	private ShipEntity AddShipInternal(ShipEntry ship, Vector3 spawnPos, Vector3 spawnRot, string uid)
