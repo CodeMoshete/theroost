@@ -286,7 +286,7 @@ namespace Services
 				sourceEntity.Id + DATA_SEP +
 				reticleEntity.Id + DATA_SEP +
 				weaponPoint.gameObject.name + DATA_SEP +
-				projectile.ClassName;
+				projectile.EntryName;
 		}
 
 		public void BroadcastEntityHealthChanged(string entityId, string enemyEntityId, float health)

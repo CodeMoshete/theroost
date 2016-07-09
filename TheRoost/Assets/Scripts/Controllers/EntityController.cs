@@ -123,7 +123,7 @@ public class EntityController
 
 	private void FireWeaponInternal(
 		string uid,
-		string projectileClassName, 
+		string projectileEntryName, 
 		string ownerId, 
 		string targeterId, 
 		ShipEntry entry, 
@@ -131,7 +131,7 @@ public class EntityController
 		bool isLocal)
 	{
 		ProjectileEntry projectileEntry = 
-			typeof(ProjectileEntry).GetProperty (projectileClassName).GetValue (null, null) as ProjectileEntry;
+			typeof(ProjectileEntry).GetProperty (projectileEntryName).GetValue (null, null) as ProjectileEntry;
 		
 		IProjectile projectile = (IProjectile)Activator.CreateInstance(Type.GetType(projectileEntry.ClassName));
 		ShipEntity ownerShip = trackedEntities[ownerId] as ShipEntity;
