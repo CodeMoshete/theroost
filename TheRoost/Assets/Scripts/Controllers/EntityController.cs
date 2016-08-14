@@ -206,7 +206,9 @@ public class EntityController
 				break;
 			case EntityType.TargetingRig:
 				Debug.Log ("their targeting reticle added: " + spawnInfo.EntityId);
-				AddTargetingEntityInternal (spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
+				TargetingEntity enemyTarget = 
+					AddTargetingEntityInternal (spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
+				enemyTarget.Model.SetActive(false);
 				break;
 		}
 	}

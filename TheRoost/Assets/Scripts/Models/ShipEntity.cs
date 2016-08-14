@@ -13,6 +13,7 @@ namespace Models
 	{
 		public ShipEntry Ship { get; private set; }
 		public Dictionary<string, List<Weapon>> Turrets { get; private set; }
+		public float CurrentHealth { get; private set; }
 		private List<string> availableTurretTypes;
 		private string selectedTurretType;
 
