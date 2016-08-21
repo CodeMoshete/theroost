@@ -3,6 +3,8 @@ using System.Collections;
 using Models.Interfaces;
 using System;
 using MonoBehaviors;
+using Services;
+using Utils;
 
 namespace Models.Projectiles
 {
@@ -17,12 +19,13 @@ namespace Models.Projectiles
 		private WeaponPoint weaponPoint;
 
 		public override void Initialize(
-			string uid, 
+			string uid,
+			ShipEntity ownerShip,
 			ProjectileEntry template, 
-			Action<IProjectile> onDestroy, 
+			Action<IProjectile> onDestroy,
 			bool isLocal)
 		{
-			base.Initialize(uid, template, onDestroy, isLocal);
+			base.Initialize(uid, ownerShip, template, onDestroy, isLocal);
 			currentScale = Vector3.one;
 		}
 
@@ -66,6 +69,15 @@ namespace Models.Projectiles
 				{
 					onDestroy(this);
 				}
+			}
+		}
+
+		protected override void ShowHitFX ()
+		{
+			if (!string.IsNullOrEmpty (projectileData.HitPrefab))
+			{
+				Vector3 spawnPos = UnityUtils.FindGameObject (model, "FXRef").transform.position;
+				Service.FXService.SpawnFX (projectileData.HitPrefab, spawnPos);
 			}
 		}
 	}

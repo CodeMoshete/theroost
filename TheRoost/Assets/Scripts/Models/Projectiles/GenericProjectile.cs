@@ -21,6 +21,7 @@ namespace Models.Projectiles
 			lifetimeLeft -= dt;
 			if(lifetimeLeft <= 0f)
 			{
+				ShowHitFX ();
 				onDestroy(this);
 			}
 		}

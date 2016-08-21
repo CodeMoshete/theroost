@@ -14,8 +14,11 @@ public class ExplosionDebrisSpawn : MonoBehaviour {
 	public int MIN_LARGE = 8;
 	public int MAX_LARGE = 15;
 
+	private bool isInitialized;
+	private bool isSpawned;
+
 	// Use this for initialization
-	void Awake ()
+	void Spawn ()
 	{
 		int numSmall = Random.Range(MIN_SMALL,MAX_SMALL);
 		int numMed = Random.Range(MIN_MED,MAX_MED);
@@ -40,7 +43,9 @@ public class ExplosionDebrisSpawn : MonoBehaviour {
 
 		foreach(string prefabName in prefabsToSpawn)
 		{
-			Instantiate(Resources.Load(prefabName), this.transform.position, Quaternion.identity);
+			GameObject tmpObj = 
+				(GameObject)Instantiate(Resources.Load(prefabName), this.transform.position, Quaternion.identity);
+			tmpObj.transform.position = transform.position;
 		}
 
 		this.transform.Find("ExplosionMesh").GetComponent<Animator>().SetTrigger("explode");
@@ -49,6 +54,15 @@ public class ExplosionDebrisSpawn : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-	
+		if (isInitialized)
+		{
+			if (!isSpawned)
+			{
+				Spawn ();
+			}
+			isSpawned = true;
+		}
+
+		isInitialized = true;
 	}
 }

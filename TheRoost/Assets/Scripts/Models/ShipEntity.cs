@@ -6,6 +6,7 @@ using Utils;
 using MonoBehaviors;
 using Services;
 using Events;
+using Game.MonoBehaviors;
 
 namespace Models
 {
@@ -13,7 +14,7 @@ namespace Models
 	{
 		public ShipEntry Ship { get; private set; }
 		public Dictionary<string, List<Weapon>> Turrets { get; private set; }
-		public float CurrentHealth { get; private set; }
+		public float CurrentHealth { get; set; }
 		private List<string> availableTurretTypes;
 		private string selectedTurretType;
 
@@ -23,6 +24,8 @@ namespace Models
 			Ship = ship;
 
 			Model.name = id;
+			EntityRef entityRef = Model.AddComponent<EntityRef> ();
+			entityRef.Initialize (this);
 
 			availableTurretTypes = new List<string>();
 			Turrets = new Dictionary<string, List<Weapon>> ();

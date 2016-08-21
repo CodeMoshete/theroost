@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Game.Controllers;
 
 namespace Services
 {
@@ -47,6 +48,20 @@ namespace Services
 				}
 
 				return frameService;
+			}
+		}
+
+		private static FXService fxService;
+		public static FXService FXService
+		{
+			get
+			{
+				if (fxService == null)
+				{
+					fxService = new FXService ();
+				}
+
+				return fxService;
 			}
 		}
 	}

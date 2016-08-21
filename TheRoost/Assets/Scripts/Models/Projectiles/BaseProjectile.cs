@@ -3,6 +3,9 @@ using System.Collections;
 using Models.Interfaces;
 using System;
 using MonoBehaviors;
+using Services;
+using Utils;
+using Game.MonoBehaviors;
 
 namespace Models.Projectiles
 {
@@ -13,17 +16,21 @@ namespace Models.Projectiles
 		protected ProjectileEntry projectileData;
 		protected Action<IProjectile> onDestroy;
 		protected float lifetimeLeft;
+		protected ShipEntity owner;
+		protected bool isLocal;
 
 		public virtual void Initialize(
-			string uid, 
+			string uid,
+			ShipEntity owner,
 			ProjectileEntry template, 
-			Action<IProjectile> onDestroy, 
+			Action<IProjectile> onDestroy,
 			bool isLocal)
 		{
 			Uid = uid;
 			projectileData = template;
 			this.onDestroy = onDestroy;
 			model = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(template.ResourceName));
+			this.owner = owner;
 
 			if(isLocal)
 			{
@@ -34,7 +41,35 @@ namespace Models.Projectiles
 
 		protected virtual void OnProjectileCollision(GameObject other)
 		{
-			// For override only.
+			EntityRef entityRef = other.GetComponent<EntityRef> ();
+				
+			if (entityRef == null || owner != entityRef.Entity)
+			{
+				ShowHitFX ();
+				ShowTargetHitFX (other);
+				entityRef.Entity.CurrentHealth -= projectileData.Damage;
+				Service.Network.BroadcastEntityHealthChanged (
+					owner.Id, 
+					entityRef.Entity.Id, 
+					entityRef.Entity.CurrentHealth);
+			}
+		}
+
+		protected virtual void ShowHitFX()
+		{
+			// Override if explosion needs to be somewhere other than projectile position
+			if (!string.IsNullOrEmpty (projectileData.HitPrefab))
+			{
+				Service.FXService.SpawnFX (projectileData.HitPrefab, model.transform.position);
+			}
+		}
+
+		protected void ShowTargetHitFX(GameObject target)
+		{
+			if (Service.FXService.ExplosionDebrisMap.ContainsKey (target.tag))
+			{
+				Service.FXService.SpawnFX (Service.FXService.ExplosionDebrisMap [target.tag]);
+			}
 		}
 
 		public virtual void Fire (ShipEntity source, WeaponPoint weapon, TargetingEntity targetEntity)

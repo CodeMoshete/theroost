@@ -40,6 +40,7 @@ public class EntityController
 		Service.Events.AddListener (EventId.EntityFiredLocal, FireLocalWeapon);
 		Service.Events.AddListener (EventId.EntityFired, FireWeaponNetwork);
 		Service.Events.AddListener (EventId.ApplicationExit, OnApplicationExit);
+		Service.Events.AddListener (EventId.EntityHealthUpdate, OnEntityHealthChanged);
 	}
 
 	private void OnPlayerConnected(object cookie)
@@ -136,7 +137,7 @@ public class EntityController
 		IProjectile projectile = (IProjectile)Activator.CreateInstance(Type.GetType(projectileEntry.ClassName));
 		ShipEntity ownerShip = trackedEntities[ownerId] as ShipEntity;
 		TargetingEntity ownerTarget = trackedEntities[targeterId] as TargetingEntity;
-		projectile.Initialize(uid, projectileEntry, RegisterProjectileForDestroy, isLocal);
+		projectile.Initialize(uid, ownerShip, projectileEntry, RegisterProjectileForDestroy, isLocal);
 		projectile.Fire(ownerShip, weaponPoint, ownerTarget);
 		projectiles.Add(uid, projectile);
 	}
@@ -250,6 +251,14 @@ public class EntityController
 	}
 
 	private void OnApplicationExit(object cookie)
+	{
+		if (localShip != null)
+		{
+			Service.Network.BroadcastDisconnect (localShip);
+		}
+	}
+
+	private void OnEntityHealthChanged(object cookie)
 	{
 		if (localShip != null)
 		{

@@ -330,6 +330,15 @@ namespace Utils
             return spawnPos;
         }
 
+		public static Transform GetRootTransform(Transform childObect)
+		{
+			if (childObect.parent != null)
+			{
+				return(GetRootTransform (childObect.parent));
+			}
+			return childObect;
+		}
+
         public static string PreciseStringFromVector3(Vector3 value)
         {
             return "(" + value.x + ", " + value.y + ", " + value.z + ")";
