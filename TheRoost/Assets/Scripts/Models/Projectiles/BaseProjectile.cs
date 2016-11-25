@@ -32,11 +32,8 @@ namespace Models.Projectiles
 			model = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(template.ResourceName));
 			this.owner = owner;
 
-			if(isLocal)
-			{
-				model.AddComponent<ProjectileHitDetection>();
-				model.GetComponent<ProjectileHitDetection>().RegisterListener(OnProjectileCollision);
-			}
+			model.AddComponent<ProjectileHitDetection>();
+			model.GetComponent<ProjectileHitDetection>().RegisterListener(OnProjectileCollision);
 		}
 
 		protected virtual void OnProjectileCollision(GameObject other)
@@ -47,11 +44,15 @@ namespace Models.Projectiles
 			{
 				ShowHitFX ();
 				ShowTargetHitFX (other);
-				entityRef.Entity.CurrentHealth -= projectileData.Damage;
-				Service.Network.BroadcastEntityHealthChanged (
-					owner.Id, 
-					entityRef.Entity.Id, 
-					entityRef.Entity.CurrentHealth);
+
+				if (isLocal)
+				{
+					entityRef.Entity.CurrentHealth -= projectileData.Damage;
+					Service.Network.BroadcastEntityHealthChanged (
+						owner.Id, 
+						entityRef.Entity.Id, 
+						entityRef.Entity.CurrentHealth);
+				}
 			}
 		}
 

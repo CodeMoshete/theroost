@@ -9,9 +9,9 @@ namespace Controllers.Types
 	public class MainMenuLoadParams
 	{
 		// Eventually we will pass our selected ship through to the next state.
-		public Action<ShipEntry> OnBattleStart { get; private set; }
+		public Action<ShipEntry, MapEntry> OnBattleStart { get; private set; }
 
-		public MainMenuLoadParams (Action<ShipEntry> onBattleStart)
+		public MainMenuLoadParams (Action<ShipEntry, MapEntry> onBattleStart)
 		{
 			OnBattleStart = onBattleStart;
 		}

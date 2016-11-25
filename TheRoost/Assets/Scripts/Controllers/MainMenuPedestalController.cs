@@ -18,18 +18,25 @@ namespace Controllers
 	{
 		private const string PEDESTAL_ID = "Models/Pedestal";
 		private readonly ShipEntry[] SHIP_ENTRIES = { ShipEntry.GalaxyClass, ShipEntry.Gunship, ShipEntry.Skirmisher, ShipEntry.Interceptor};
+		private readonly MapEntry[] MAP_ENTRIES = { MapEntry.BattleGround };
 
 		private GameObject pedestal;
 		private GameObject startButton;
 		private VRInteractionControls controls;
-		private Action<ShipEntry> onStartBattle;
+		private Action<ShipEntry, MapEntry> onStartBattle;
 		private GameObject leftButton;
 		private GameObject rightButton;
+		private GameObject leftButtonMap;
+		private GameObject rightButtonMap;
 		private GameObject shipCenter;
 		private Entity currentShipModel;
+
 		private ShipEntry currentShip; 
 		private int shipIndex;
 
+		private MapEntry currentMap;
+		private int mapIndex;
+		private Text mapText;
 
 		public void Load(SceneLoadedCallback onLoadedCallback, object passedParams)
 		{
@@ -54,13 +61,21 @@ namespace Controllers
 			shipCenter = UnityUtils.FindGameObject (pedestal, "ShipCenter");
 			currentShip = SHIP_ENTRIES [shipIndex];
 			loadShip (shipIndex);
+
+			leftButtonMap = UnityUtils.FindGameObject (pedestal, "arrow left map");
+			controls.RegisterOnPress (leftButtonMap, OnleftButtonPressed);
+			rightButtonMap= UnityUtils.FindGameObject (pedestal, "arrow right map");
+			controls.RegisterOnPress (rightButtonMap, OnrightButtonPressed);
+			mapText = UnityUtils.FindGameObject (pedestal, "MapNameField").GetComponent<Text>();
+			currentMap = MAP_ENTRIES [0];
+			mapText.text = currentMap.EntryName;
 		}
 				
 
 		private void OnStartButtonPressed()
 		{
 			// TODO: Pass through a dynamic value determined by UI.
-			onStartBattle (currentShip);
+			onStartBattle (currentShip, currentMap);
 		}
 
 		private void OnleftButtonPressed()
@@ -73,7 +88,6 @@ namespace Controllers
 
 			currentShip = SHIP_ENTRIES [shipIndex];
 			loadShip (shipIndex);
-
 		}
 
 		private void OnrightButtonPressed()
@@ -86,7 +100,30 @@ namespace Controllers
 
 			currentShip = SHIP_ENTRIES [shipIndex];
 			loadShip (shipIndex);
+		}
 
+		private void OnLeftMapPressed()
+		{
+			if (mapIndex >= MAP_ENTRIES.Length - 1) {
+				mapIndex = 0;
+			} else {
+				mapIndex++;
+			}
+
+			currentMap = MAP_ENTRIES [mapIndex];
+			mapText.text = currentMap.EntryName;
+		}
+
+		private void OnRightMapPressed()
+		{
+			if (shipIndex <= 0 ) {
+				shipIndex = SHIP_ENTRIES.Length - 1;
+			} else {
+				shipIndex--;
+			}
+
+			currentShip = SHIP_ENTRIES [shipIndex];
+			mapText.text = currentMap.EntryName;
 		}
 
 		private void loadShip(int Index)

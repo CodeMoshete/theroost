@@ -21,14 +21,19 @@ namespace Controllers
 		private SceneLoadedCallback onLoaded;
 		private ShipEntity localShip;
 		private ShipEntry selectedShip;
+		private MapEntry selectedMap;
+		private MapEntity localMap;
 		private GameObject vrRig;
 		private SteamVR_Controller.Device shipDevice;
+
+		private bool isMaster;
 
 		public void Load(SceneLoadedCallback onLoadedCallback, object passedParams)
 		{
 			onLoaded = onLoadedCallback;
 			BattleLoadParams loadParams = (BattleLoadParams)passedParams;
 			selectedShip = loadParams.Ship;
+			selectedMap = loadParams.Map;
 			entityController = new EntityController ();
 			vrRig = GameObject.Find ("[CameraRig]");
 			Service.Network.Connect (OnConnectionMade);
@@ -41,11 +46,17 @@ namespace Controllers
 
 		public void Start()
 		{
+			isMaster = Service.Network.IsMaster;
 			Service.FrameUpdate.RegisterForUpdate(this);
 			// TODO: Base this off of player ID rather than IsMaster so we can support more than 2 player positions.
-			Vector3 spawnPos = Service.Network.IsMaster ? new Vector3(0f, 1f, 1.5f) : new Vector3(0f, 1f, -1.5f);
+			Vector3 spawnPos = isMaster ? new Vector3(0f, 1f, 1.5f) : new Vector3(0f, 1f, -1.5f);
 			localShip = entityController.AddLocalShip (selectedShip, spawnPos);
 			battleControls = new VRShipBattleControls (localShip, entityController);
+
+			if (isMaster)
+			{
+				localMap = entityController.AddLocalMap (selectedMap);
+			}
 		}
 
 		public void Update(float dt)

@@ -262,7 +262,7 @@ namespace Services
 							entity.EntryName;
 		}
 
-		public void BroadcastIdentification(Entity entity)
+		public void BroadcastIdentification(ShipEntity entity, MapEntity map)
 		{
 			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;
 			m_eventBatch += NetworkEvents.PlayerIdentify + TITLE_SEP +

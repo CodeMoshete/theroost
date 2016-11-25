@@ -16,6 +16,7 @@ public class EntityController
 	private const string USER_PREFIX = "u*";
 	private const string WEAPON_PREFIX = "w*";
 	private const string TARGET_RIG_PREFIX = "t*";
+	private const string MAP_PREFIX = "m";
 
 	private Dictionary<string, int> localEntityTypeCounts;
 	private Dictionary<string, Entity> trackedEntities;
@@ -25,6 +26,7 @@ public class EntityController
 	private List<IProjectile> projectilesToDestroy;
 
 	private ShipEntity localShip;
+	private MapEntity localMap;
 
 	public EntityController()
 	{
@@ -45,7 +47,7 @@ public class EntityController
 
 	private void OnPlayerConnected(object cookie)
 	{
-		Service.Network.BroadcastIdentification (localShip);
+		Service.Network.BroadcastIdentification (localShip, localMap);
 	}
 
 	private void OnPlayerIdentified(object cookie)
@@ -169,6 +171,13 @@ public class EntityController
 		Service.Network.BroadcastEntitySpawned (localShip);
 
 		return localShip;
+	}
+
+	public MapEntity AddLocalMap(MapEntry map)
+	{
+		string uid = MAP_PREFIX + map.EntryName;
+		localMap = new MapEntity (map, uid, Vector3.zero, Vector3.zero);
+		return localMap;
 	}
 
 	public TargetingEntity AddLocalTargetingEntity(GameObject aimingController)

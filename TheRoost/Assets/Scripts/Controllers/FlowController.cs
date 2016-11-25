@@ -29,9 +29,9 @@ namespace Game.Controllers
 			sceneFactory.LoadScene<MainMenuPedestalController>(OnSceneLoaded, passedParams);
 		}
 
-		public void LoadBattle(ShipEntry chosenShip)
+		public void LoadBattle(ShipEntry chosenShip, MapEntry chosenMap)
 		{
-			BattleLoadParams passedParams = new BattleLoadParams(LoadMainMenu, chosenShip);
+			BattleLoadParams passedParams = new BattleLoadParams(LoadMainMenu, chosenShip, chosenMap);
 			sceneFactory.LoadScene<BattleController>(OnSceneLoaded, passedParams);
 		}
 
