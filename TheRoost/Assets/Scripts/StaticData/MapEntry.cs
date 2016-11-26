@@ -20,7 +20,7 @@ public class MapEntry
 		{ 
 			return new MapEntry (
 				"Maps/map_battleground", 
-				"Battleground");
+				"BattleGround");
 		} 
 	}
 }
