@@ -64,6 +64,14 @@ public class EntityController
 					AddShipInternal (entry, spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
 				}
 				break;
+			case EntityType.Map:
+				if (localMap == null)
+				{
+					MapEntry map = typeof(MapEntry).GetProperty (spawnInfo.EntryName).GetValue (null, null) as MapEntry;
+					Debug.Log ("Map identified: " + spawnInfo.EntityId);
+					AddLocalMap (map);
+				}
+				break;
 		}
 	}
 

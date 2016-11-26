@@ -63,9 +63,9 @@ namespace Controllers
 			loadShip (shipIndex);
 
 			leftButtonMap = UnityUtils.FindGameObject (pedestal, "arrow left map");
-			controls.RegisterOnPress (leftButtonMap, OnleftButtonPressed);
+			controls.RegisterOnPress (leftButtonMap, OnLeftMapPressed);
 			rightButtonMap= UnityUtils.FindGameObject (pedestal, "arrow right map");
-			controls.RegisterOnPress (rightButtonMap, OnrightButtonPressed);
+			controls.RegisterOnPress (rightButtonMap, OnRightMapPressed);
 			mapText = UnityUtils.FindGameObject (pedestal, "MapNameField").GetComponent<Text>();
 			currentMap = MAP_ENTRIES [0];
 			mapText.text = currentMap.EntryName;

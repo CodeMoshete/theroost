@@ -142,6 +142,10 @@ namespace Services
 																	  dataParts[3],
 																	  dataParts[4]);
 				Service.Events.SendEvent (EventId.NetPlayerIdentified, spawnInfo);
+
+				NetSpawnEntityType mapInfo = new NetSpawnEntityType (
+					"map", TeamID.Neutral, Vector3.zero, Vector3.zero, EntityType.Map.ToString(), dataParts [5]);
+				Service.Events.SendEvent (EventId.NetPlayerIdentified, mapInfo);
 			}
 			else if(eventType == NetworkEvents.PlayerDisconnect)
 			{
@@ -270,7 +274,8 @@ namespace Services
 							Vector3Encode (entity.SpawnPos) + DATA_SEP +
 							Vector3Encode (entity.SpawnRotation) + DATA_SEP +
 							entity.Type.ToString () + DATA_SEP +
-							entity.EntryName;
+							entity.EntryName + DATA_SEP +
+							map.EntryName;
 		}
 
 		public void BroadcastEntityAttack(
