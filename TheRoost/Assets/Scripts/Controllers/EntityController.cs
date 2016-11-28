@@ -277,9 +277,10 @@ public class EntityController
 
 	private void OnEntityHealthChanged(object cookie)
 	{
-		if (localShip != null)
+		NetEntityHealthUpdateType healthUpdate = (NetEntityHealthUpdateType)cookie;
+		if (trackedEntities.ContainsKey (healthUpdate.EntityId))
 		{
-			Service.Network.BroadcastDisconnect (localShip);
+			trackedEntities [healthUpdate.EntityId].SetHealth (healthUpdate.CurrentHealth);
 		}
 	}
 }

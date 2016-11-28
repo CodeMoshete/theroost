@@ -47,7 +47,7 @@ namespace Models.Projectiles
 
 				if (isLocal)
 				{
-					entityRef.Entity.CurrentHealth -= projectileData.Damage;
+					entityRef.Entity.SetHealth(entityRef.Entity.CurrentHealth - projectileData.Damage);
 					Service.Network.BroadcastEntityHealthChanged (
 						owner.Id, 
 						entityRef.Entity.Id, 

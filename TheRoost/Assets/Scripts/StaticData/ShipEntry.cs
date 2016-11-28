@@ -6,10 +6,10 @@ public class ShipEntry
 	public string ResourceName { get; private set; }
 	public string EntryName { get; private set; }
 	public float MoveSpeed { get; private set; }
-	public float Health { get; private set; }
+	public int Health { get; private set; }
 
 	/// EntryName must ALWAYS be the same as the property name.
-	public ShipEntry(string resourceName, string entryName, float moveSpeed, float health)
+	public ShipEntry(string resourceName, string entryName, float moveSpeed, int health)
 	{
 		ResourceName = resourceName;
 		MoveSpeed = moveSpeed;
@@ -26,7 +26,7 @@ public class ShipEntry
 				"Models/GalaxyClass", 
 				"GalaxyClass", 
 				0.01f, 
-				100f);
+				100);
 		} 
 	}
 
@@ -38,7 +38,7 @@ public class ShipEntry
 				"Models/Gunship", 
 				"Gunship", 
 				0.01f, 
-				100f);
+				100);
 		} 
 	}
 
@@ -50,7 +50,7 @@ public class ShipEntry
 				"Models/Interceptor", 
 				"Interceptor", 
 				0.01f, 
-				100f);
+				100);
 		} 
 	}
 
@@ -62,7 +62,7 @@ public class ShipEntry
 				"Models/Skirmisher", 
 				"Skirmisher", 
 				0.01f, 
-				100f);
+				100);
 		} 
 	}
 }

@@ -35,7 +35,13 @@ namespace Services
 		private readonly string[] DATA_SEP_SPLIT = { "#" };
 
 		public int PlayerId { get { return PhotonNetwork.player.ID; } }
-		public bool IsMaster { get{ return PhotonNetwork.player.isMasterClient; } set {}}
+		public bool IsMaster 
+		{ 
+			get
+			{ 
+				return (m_netStatus == NetworkStatus.Disconnected) || PhotonNetwork.player.isMasterClient; 
+			} 
+		}
 		public bool IsInitialized { get{ return m_isInitialized; } set{} }
 
 		private bool m_isInitialized;
@@ -163,13 +169,13 @@ namespace Services
 			else if(eventType == NetworkEvents.EntityHealth)
 			{
 				NetEntityHealthUpdateType healthUpdate = 
-					new NetEntityHealthUpdateType(dataParts[0], dataParts[1], Convert.ToSingle(dataParts[2]));
+					new NetEntityHealthUpdateType(dataParts[0], dataParts[1], Convert.ToInt32(dataParts[2]));
 				Service.Events.SendEvent(EventId.EntityHealthUpdate, healthUpdate);
 			}
 			else if(eventType == NetworkEvents.EntityDeath)
 			{
 				NetEntityHealthUpdateType healthUpdate = 
-					new NetEntityHealthUpdateType(dataParts[0], dataParts[1], 0f);
+					new NetEntityHealthUpdateType(dataParts[0], dataParts[1], 0);
 				Service.Events.SendEvent(EventId.EntityDestroyed, healthUpdate);
 			}
 			else if(eventType == NetworkEvents.EntitySpawned)
@@ -297,7 +303,10 @@ namespace Services
 		public void BroadcastEntityHealthChanged(string entityId, string enemyEntityId, float health)
 		{
 			if(!string.IsNullOrEmpty(m_eventBatch)) m_eventBatch += EVENT_SEP;
-			m_eventBatch += NetworkEvents.EntityHealth.ToString() + TITLE_SEP + entityId + DATA_SEP + enemyEntityId + DATA_SEP + health.ToString();
+			m_eventBatch += NetworkEvents.EntityHealth.ToString() + TITLE_SEP + 
+				entityId + DATA_SEP + 
+				enemyEntityId + DATA_SEP + 
+				health.ToString();
 		}
 
 		public void BroadcastEntityDeath(string entityId, string enemyEntityId)

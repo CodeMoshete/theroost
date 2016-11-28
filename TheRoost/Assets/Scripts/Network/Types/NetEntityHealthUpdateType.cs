@@ -19,12 +19,12 @@ namespace Game.Controllers.Network.Types
 	{
 		public string EntityId { get; private set; }
 		public string AttackerEntityId { get; private set; }
-		public float DamageTaken { get; private set; }
+		public int CurrentHealth { get; private set; }
 
-		public NetEntityHealthUpdateType (string entityId, string attackerEntityId, float damageTaken)
+		public NetEntityHealthUpdateType (string entityId, string attackerEntityId, int currentHealth)
 		{
 			EntityId = entityId;
-			DamageTaken = damageTaken;
+			CurrentHealth = currentHealth;
 			AttackerEntityId = attackerEntityId;
 		}
 	}

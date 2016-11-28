@@ -10,7 +10,7 @@ public class ProjectileEntry
 	public float MoveSpeed { get; private set; }
 	public float TrackingRate { get; private set; }
 	public float Lifetime { get; private set; }
-	public float Damage { get; private set; }
+	public int Damage { get; private set; }
 
 	/// EntryName must ALWAYS be the same as the property name.
 	public ProjectileEntry(
@@ -18,7 +18,7 @@ public class ProjectileEntry
 		string entryName, 
 		string className,
 		string hitPrefab,
-		float damage,
+		int damage,
 		float moveSpeed, 
 		float trackingRate,
 		float lifetime)
@@ -43,7 +43,7 @@ public class ProjectileEntry
 				"Disruptor", 
 				"Models.Projectiles.GenericProjectile",
 				"FX/ExplosionHD",
-				1f,
+				1,
 				0.01f, 
 				0.01f,
 				5f);
@@ -59,7 +59,7 @@ public class ProjectileEntry
 				"Phaser", 
 				"Models.Projectiles.GenericBeam", 
 				"FX/BeamHit",
-				1f,
+				1,
 				3f, 
 				3f,
 				2f);
@@ -75,7 +75,7 @@ public class ProjectileEntry
 				"PhotonTorpedo", 
 				"Models.Projectiles.GenericProjectile", 
 				"FX/ExplosionHD",
-				5f,
+				5,
 				0.04f, 
 				0.01f,
 				5f);

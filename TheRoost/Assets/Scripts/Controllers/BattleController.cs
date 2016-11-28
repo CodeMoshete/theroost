@@ -74,6 +74,10 @@ namespace Controllers
 		{
 			battleControls.Unload ();
 			Service.FrameUpdate.UnregisterForUpdate(this);
+			localShip.Unload ();
+			localShip = null;
+			localMap.Unload ();
+			localMap = null;
 		}
 	}
 }

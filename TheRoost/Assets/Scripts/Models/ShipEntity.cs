@@ -14,7 +14,6 @@ namespace Models
 	{
 		public ShipEntry Ship { get; private set; }
 		public Dictionary<string, List<Weapon>> Turrets { get; private set; }
-		public float CurrentHealth { get; set; }
 		private List<string> availableTurretTypes;
 		private string selectedTurretType;
 
@@ -26,6 +25,8 @@ namespace Models
 			Model.name = id;
 			EntityRef entityRef = Model.AddComponent<EntityRef> ();
 			entityRef.Initialize (this);
+
+			SetBaseHealth (Ship.Health);
 
 			availableTurretTypes = new List<string>();
 			Turrets = new Dictionary<string, List<Weapon>> ();
@@ -101,6 +102,11 @@ namespace Models
 			}
 
 			return null;
+		}
+
+		protected override void PlayDeathAnimation ()
+		{
+			base.PlayDeathAnimation ();
 		}
 	}
 }
