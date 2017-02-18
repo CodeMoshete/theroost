@@ -26,6 +26,7 @@ public class EntityController
 	private List<IProjectile> projectilesToDestroy;
 
 	private ShipEntity localShip;
+	private TargetingEntity localTargeter;
 	private MapEntity localMap;
 
 	public EntityController()
@@ -48,6 +49,7 @@ public class EntityController
 	private void OnPlayerConnected(object cookie)
 	{
 		Service.Network.BroadcastIdentification (localShip, localMap);
+		Service.Network.BroadcastEntitySpawned(localTargeter);
 	}
 
 	private void OnPlayerIdentified(object cookie)
@@ -145,6 +147,19 @@ public class EntityController
 			typeof(ProjectileEntry).GetProperty (projectileEntryName).GetValue (null, null) as ProjectileEntry;
 		
 		IProjectile projectile = (IProjectile)Activator.CreateInstance(Type.GetType(projectileEntry.ClassName));
+
+		if(!trackedEntities.ContainsKey(ownerId))
+		{
+			Debug.LogError("[EntityController] Not tracking entity " + ownerId);
+			return;
+		}
+
+		if(!trackedEntities.ContainsKey(targeterId))
+		{
+			Debug.LogError("[EntityController] Not tracking targeter " + targeterId);
+			return;
+		}
+
 		ShipEntity ownerShip = trackedEntities[ownerId] as ShipEntity;
 		TargetingEntity ownerTarget = trackedEntities[targeterId] as TargetingEntity;
 		projectile.Initialize(uid, ownerShip, projectileEntry, RegisterProjectileForDestroy, isLocal);
@@ -191,11 +206,11 @@ public class EntityController
 	public TargetingEntity AddLocalTargetingEntity(GameObject aimingController)
 	{
 		string uid = USER_PREFIX + Service.Network.PlayerId + TARGET_RIG_PREFIX + "1";
-		TargetingEntity entity = AddTargetingEntityInternal (aimingController.transform.position, 
+		localTargeter = AddTargetingEntityInternal (aimingController.transform.position, 
 			aimingController.transform.eulerAngles, 
 			uid);
-		Service.Network.BroadcastEntitySpawned(entity);
-		return entity;
+		Service.Network.BroadcastEntitySpawned(localTargeter);
+		return localTargeter;
 	}
 
 	private ShipEntity AddShipInternal(ShipEntry ship, Vector3 spawnPos, Vector3 spawnRot, string uid)
