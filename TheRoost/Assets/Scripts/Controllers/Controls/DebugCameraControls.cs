@@ -22,7 +22,10 @@ namespace HammerEditor.Main.Cameras.ControlSystems
         private Transform transform;
         private Transform orbitContainer;
 
-        public void Initialize(Camera cam)
+		private float moveSpeed;
+		private float moveSpeedMult;
+
+		public void Initialize(Camera cam, float scaleMultiplier = 1f)
         {
             // TODO: We need the following core utility methods created before we can use Midcore UnityCamera:
             // - Transform.Translate(Vector3)
@@ -31,6 +34,9 @@ namespace HammerEditor.Main.Cameras.ControlSystems
 			transform = cam.transform;
             transform.position = CAM_START_POS;
             transform.eulerAngles = CAM_START_ROT;
+
+			moveSpeed = MOVE_SPEED * scaleMultiplier;
+			moveSpeedMult = MOVE_SPEED_MULT * scaleMultiplier;
         }
 
         public void Update(float dt)
@@ -38,40 +44,40 @@ namespace HammerEditor.Main.Cameras.ControlSystems
             // TODO: Consider using InputManager from Midcore Library.
             if (Input.GetKey(KeyCode.W) && isDragging || isDraggingOrbit)
             {
-                Vector3 fwdSpeed = new Vector3(0f, 0f, MOVE_SPEED * speedMult);
+				Vector3 fwdSpeed = new Vector3(0f, 0f, moveSpeed * speedMult);
                 transform.Translate(fwdSpeed);
             }
             
             if (Input.GetKey(KeyCode.A) && isDragging)
             {
-                Vector3 fwdSpeed = new Vector3(-MOVE_SPEED * speedMult, 0f, 0f);
+				Vector3 fwdSpeed = new Vector3(-moveSpeed * speedMult, 0f, 0f);
                 transform.Translate(fwdSpeed);
                 ClearCamTarget();
             }
             
             if (Input.GetKey(KeyCode.S) && isDragging || isDraggingOrbit)
             {
-                Vector3 fwdSpeed = new Vector3(0f, 0f, -MOVE_SPEED * speedMult);
+				Vector3 fwdSpeed = new Vector3(0f, 0f, -moveSpeed * speedMult);
                 transform.Translate(fwdSpeed);
             }
             
             if (Input.GetKey(KeyCode.D) && isDragging)
             {
-                Vector3 fwdSpeed = new Vector3(MOVE_SPEED * speedMult, 0f, 0f);
+				Vector3 fwdSpeed = new Vector3(moveSpeed * speedMult, 0f, 0f);
                 transform.Translate(fwdSpeed);
                 ClearCamTarget();
             }
             
             if (Input.GetKey(KeyCode.Q) && isDragging)
             {
-                Vector3 fwdSpeed = new Vector3(0f, -MOVE_SPEED * speedMult, 0f);
+				Vector3 fwdSpeed = new Vector3(0f, -moveSpeed * speedMult, 0f);
                 transform.Translate(fwdSpeed);
                 ClearCamTarget();
             }
             
             if (Input.GetKey(KeyCode.E) && isDragging)
             {
-                Vector3 fwdSpeed = new Vector3(0f, MOVE_SPEED * speedMult, 0f);
+				Vector3 fwdSpeed = new Vector3(0f, moveSpeed * speedMult, 0f);
                 transform.Translate(fwdSpeed);
                 ClearCamTarget();
             }
@@ -87,7 +93,7 @@ namespace HammerEditor.Main.Cameras.ControlSystems
 
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                speedMult = MOVE_SPEED_MULT;
+				speedMult = moveSpeedMult;
             }
             
             if (Input.GetKeyUp(KeyCode.LeftShift))
