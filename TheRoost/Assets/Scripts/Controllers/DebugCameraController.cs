@@ -103,16 +103,27 @@ namespace Controllers
 				debugCamera = camObject.AddComponent<Camera>();
 				debugCamera.clearFlags = CameraClearFlags.Nothing;
 				debugCamera.depth = 1;
-				debugCamera.cullingMask = 1 << 
 				debugControls = new DebugCameraControls ();
 				debugControls.Initialize (debugCamera);
+
+				debugCamera.cullingMask = 0;
+				for (int i = 0, ct = GAME_CAMERA_LAYERS.Count; i < ct; i++)
+				{
+					debugCamera.cullingMask |= 1 << LayerMask.NameToLayer (GAME_CAMERA_LAYERS [i]);
+				}
 
 				// Facr clip camera
 				GameObject farCamObject = new GameObject(DEBUG_CAMERA_FAR_NAME);
 				debugFarCamera = farCamObject.AddComponent<Camera>();
 				debugFarCamera.nearClipPlane = 0.01f;
 				debugFarControls = new DebugCameraControls ();
-				debugFarControls.Initialize (debugFarCamera, 0.001f);
+				debugFarControls.Initialize (debugFarCamera, 0.01f);
+
+				debugFarCamera.cullingMask = 0;
+				for (int i = 0, ct = BACKGROUND_CAMERA_LAYERS.Count; i < ct; i++)
+				{
+					debugFarCamera.cullingMask |= 1 << LayerMask.NameToLayer (BACKGROUND_CAMERA_LAYERS [i]);
+				}
 
 				cameraRig.SetActive(false);
 			}

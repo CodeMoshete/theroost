@@ -36,7 +36,7 @@ namespace HammerEditor.Main.Cameras.ControlSystems
             transform.eulerAngles = CAM_START_ROT;
 
 			moveSpeed = MOVE_SPEED * scaleMultiplier;
-			moveSpeedMult = MOVE_SPEED_MULT * scaleMultiplier;
+			moveSpeedMult = MOVE_SPEED_MULT;
         }
 
         public void Update(float dt)
