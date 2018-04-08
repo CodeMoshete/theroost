@@ -31,6 +31,7 @@ namespace Models.Projectiles
 			this.onDestroy = onDestroy;
 			model = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(template.ResourceName));
 			this.owner = owner;
+			this.isLocal = isLocal;
 
 			model.AddComponent<ProjectileHitDetection>();
 			model.GetComponent<ProjectileHitDetection>().RegisterListener(OnProjectileCollision);

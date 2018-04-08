@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 using Controllers.Types;
+using Monobehaviors;
 
 namespace Controllers
 {
@@ -35,8 +36,24 @@ namespace Controllers
 			selectedShip = loadParams.Ship;
 			selectedMap = loadParams.Map;
 			entityController = new EntityController ();
-			vrRig = GameObject.Find ("[CameraRig]");
+			vrRig = GameObject.Instantiate(Resources.Load<GameObject>("[CameraRig]"));
+			AddControllerComponents ("Controller (left)");
+			AddControllerComponents ("Controller (right)");
 			Service.Network.Connect (OnConnectionMade);
+		}
+
+		private void AddControllerComponents(string controllerName)
+		{
+			GameObject controller = UnityUtils.FindGameObject (vrRig, controllerName);
+			if (controller.GetComponent<SphereCollider> () == null)
+			{
+				controller.AddComponent<SphereCollider> ();
+			}
+
+			if (controller.GetComponent<VRControllerInterface> () == null)
+			{
+				controller.AddComponent<VRControllerInterface> ();
+			}
 		}
 
 		private void OnConnectionMade()

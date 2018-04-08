@@ -39,7 +39,7 @@ public class SteamVR_PlayArea : MonoBehaviour
 			if (initOpenVR)
 			{
 				var error = EVRInitError.None;
-				OpenVR.Init(ref error, EVRApplicationType.VRApplication_Other);
+				OpenVR.Init(ref error, EVRApplicationType.VRApplication_Utility);
 			}
 
 			var chaperone = OpenVR.Chaperone;
@@ -65,17 +65,17 @@ public class SteamVR_PlayArea : MonoBehaviour
 
 				pRect.vCorners0.v0 =  x;
 				pRect.vCorners0.v1 =  0;
-				pRect.vCorners0.v2 =  z;
+				pRect.vCorners0.v2 = -z;
 
-				pRect.vCorners1.v0 =  x;
+				pRect.vCorners1.v0 = -x;
 				pRect.vCorners1.v1 =  0;
 				pRect.vCorners1.v2 = -z;
 
 				pRect.vCorners2.v0 = -x;
 				pRect.vCorners2.v1 =  0;
-				pRect.vCorners2.v2 = -z;
+				pRect.vCorners2.v2 =  z;
 
-				pRect.vCorners3.v0 = -x;
+				pRect.vCorners3.v0 =  x;
 				pRect.vCorners3.v1 =  0;
 				pRect.vCorners3.v2 =  z;
 
@@ -171,11 +171,7 @@ public class SteamVR_PlayArea : MonoBehaviour
 		renderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 		renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 		renderer.receiveShadows = false;
-#if !(UNITY_5_3 || UNITY_5_2 || UNITY_5_1 || UNITY_5_0)
 		renderer.lightProbeUsage = LightProbeUsage.Off;
-#else
-		renderer.useLightProbes = false;
-#endif
 	}
 
 #if UNITY_EDITOR
@@ -262,7 +258,7 @@ public class SteamVR_PlayArea : MonoBehaviour
 			// If we want the configured bounds of the user,
 			// we need to wait for tracking.
 			if (drawInGame && size == Size.Calibrated)
-				StartCoroutine("UpdateBounds");
+				StartCoroutine(UpdateBounds());
 		}
 	}
 
