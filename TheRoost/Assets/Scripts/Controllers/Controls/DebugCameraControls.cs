@@ -24,6 +24,7 @@ namespace HammerEditor.Main.Cameras.ControlSystems
 
 		private float moveSpeed;
 		private float moveSpeedMult;
+		private bool isFarCam;
 
 		public void Initialize(Camera cam, float scaleMultiplier = 1f)
         {
@@ -37,6 +38,8 @@ namespace HammerEditor.Main.Cameras.ControlSystems
 
 			moveSpeed = MOVE_SPEED * scaleMultiplier;
 			moveSpeedMult = MOVE_SPEED_MULT;
+
+			isFarCam = scaleMultiplier < 1f;
         }
 
         public void Update(float dt)
@@ -82,7 +85,7 @@ namespace HammerEditor.Main.Cameras.ControlSystems
                 ClearCamTarget();
             }
             
-			if(Input.GetKeyDown(KeyCode.T))
+			if(Input.GetKeyDown(KeyCode.T) && !isFarCam)
 			{
 				VRTouchpadInteraction interactionPress = new VRTouchpadInteraction(transform.gameObject, Vector2.zero);
 				Service.Events.SendEvent(EventId.VRControllerTouchpadPress, interactionPress);
@@ -175,7 +178,7 @@ namespace HammerEditor.Main.Cameras.ControlSystems
             }
             
 			float scrollAmt = Input.GetAxis("Mouse ScrollWheel");
-            if (scrollAmt != 0f && canScroll)
+			if (!isFarCam && scrollAmt != 0f && canScroll)
             {
 				VRTouchpadInteraction fakePress = 
 					new VRTouchpadInteraction(transform.gameObject, Vector2.zero);

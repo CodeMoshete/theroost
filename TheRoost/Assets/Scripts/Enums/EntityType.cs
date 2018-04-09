@@ -4,7 +4,8 @@ namespace Game.Enums
 	{
 		Ship,
 		TargetingRig,
-		Map
+		Map,
+		EnvironmentObject
 	}
 }
 

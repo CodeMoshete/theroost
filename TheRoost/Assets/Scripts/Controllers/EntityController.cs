@@ -74,6 +74,9 @@ public class EntityController
 					AddLocalMap (map);
 				}
 				break;
+			case EntityType.EnvironmentObject:
+
+				break;
 		}
 	}
 
@@ -242,6 +245,9 @@ public class EntityController
 				TargetingEntity enemyTarget = 
 					AddTargetingEntityInternal (spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
 				enemyTarget.Model.SetActive(false);
+				break;
+			case EntityType.EnvironmentObject:
+
 				break;
 		}
 	}

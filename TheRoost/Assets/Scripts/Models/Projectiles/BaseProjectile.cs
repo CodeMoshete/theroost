@@ -46,7 +46,7 @@ namespace Models.Projectiles
 				ShowHitFX ();
 				ShowTargetHitFX (other);
 
-				if (isLocal)
+				if (isLocal && entityRef != null)
 				{
 					entityRef.Entity.SetHealth(entityRef.Entity.CurrentHealth - projectileData.Damage);
 					Service.Network.BroadcastEntityHealthChanged (
