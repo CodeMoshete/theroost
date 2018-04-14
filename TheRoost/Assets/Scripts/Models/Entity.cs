@@ -25,8 +25,8 @@ namespace Models
 		public int MaxHealth { get; private set; }
 		public float HealthPct { get; private set; }
 
-		public Vector3 SpawnPos { get; private set; }
-		public Vector3 SpawnRotation { get; private set; }
+		public virtual Vector3 SpawnPos { get; private set; }
+		public virtual Vector3 SpawnRotation { get; private set; }
 
 		public Entity(string id, 
 					  string resourceName, 

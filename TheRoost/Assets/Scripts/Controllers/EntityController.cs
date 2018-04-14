@@ -9,6 +9,7 @@ using Game.Enums;
 using Models.Interfaces;
 using System;
 using MonoBehaviors;
+using Utils;
 
 public class EntityController
 {
@@ -20,6 +21,7 @@ public class EntityController
 
 	private Dictionary<string, int> localEntityTypeCounts;
 	private Dictionary<string, Entity> trackedEntities;
+	private Dictionary<string, Entity> trackedEnvironmentObjects;
 
 	private Dictionary<string, IProjectile> projectiles;
 	private int localProjectileCount;
@@ -33,6 +35,7 @@ public class EntityController
 	{
 		localEntityTypeCounts = new Dictionary<string, int> ();
 		trackedEntities = new Dictionary<string, Entity> ();
+		trackedEnvironmentObjects = new Dictionary<string, Entity> ();
 		projectiles = new Dictionary<string, IProjectile>();
 		projectilesToDestroy = new List<IProjectile>();
 		Service.Events.AddListener (EventId.NetPlayerConnected, OnPlayerConnected);
@@ -50,6 +53,10 @@ public class EntityController
 	{
 		Service.Network.BroadcastIdentification (localShip, localMap);
 		Service.Network.BroadcastEntitySpawned(localTargeter);
+		foreach (KeyValuePair<string, Entity> pair in trackedEnvironmentObjects)
+		{
+			Service.Network.BroadcastEntitySpawned (pair.Value);
+		}
 	}
 
 	private void OnPlayerIdentified(object cookie)
@@ -75,7 +82,10 @@ public class EntityController
 				}
 				break;
 			case EntityType.EnvironmentObject:
-
+				Debug.Log ("Environment Object identified: " + spawnInfo.EntityId);
+				EnvironmentObjectEntry objEntry = 
+					typeof(EnvironmentObjectEntry).GetProperty (spawnInfo.EntryName).GetValue (null, null) as EnvironmentObjectEntry;
+				AddEnvironmentObjectInternal (objEntry, spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
 				break;
 		}
 	}
@@ -178,6 +188,63 @@ public class EntityController
 		}
 	}
 
+	public MapEntity AddLocalMap(MapEntry map)
+	{
+		string uid = MAP_PREFIX + map.EntryName;
+		localMap = new MapEntity (map, uid, Vector3.zero, Vector3.zero);
+		List<GameObject> pieceSpawners = UnityUtils.FindAllGameObjectContains<EnvironmentObjectSpawn>();
+		for (int i = 0, count = pieceSpawners.Count; i < count; ++i)
+		{
+			EnvironmentObjectEntry entry = pieceSpawners [i].GetComponent<EnvironmentObjectSpawn> ().Entry;
+			AddLocalEnvironmentObject (entry, pieceSpawners[i].transform.position, pieceSpawners[i].transform.eulerAngles);
+		}
+		return localMap;
+	}
+
+	public EnvironmentObjectEntity AddLocalEnvironmentObject(
+		EnvironmentObjectEntry entry, Vector3 spawnPos = new Vector3(), Vector3 spawnRot = new Vector3())
+	{
+		EnvironmentObjectEntity envObj = null;
+		if (Service.Network.IsMaster)
+		{
+			if (!localEntityTypeCounts.ContainsKey (entry.ResourceName))
+			{
+				localEntityTypeCounts.Add (entry.ResourceName, 0);
+			}
+			else
+			{
+				localEntityTypeCounts [entry.ResourceName]++;
+			}
+
+			string resCount = localEntityTypeCounts [entry.ResourceName].ToString ();
+			string objId = USER_PREFIX + Service.Network.PlayerId + SHIP_PREFIX + entry.ResourceName + resCount;
+			Debug.Log ("mine: " + objId);
+
+			envObj = AddEnvironmentObjectInternal (entry, spawnPos, spawnRot, objId);
+			Service.Network.BroadcastEntitySpawned (envObj);
+		}
+		return envObj;
+	}
+
+	private EnvironmentObjectEntity AddEnvironmentObjectInternal(
+		EnvironmentObjectEntry entry, Vector3 spawnPos, Vector3 spawnRot, string uid)
+	{
+		EnvironmentObjectEntity obj = new EnvironmentObjectEntity (entry, uid, spawnPos, spawnRot);
+		trackedEntities.Add (uid, obj);
+		trackedEnvironmentObjects.Add (uid, obj);
+		return obj;
+	}
+
+	public TargetingEntity AddLocalTargetingEntity(GameObject aimingController)
+	{
+		string uid = USER_PREFIX + Service.Network.PlayerId + TARGET_RIG_PREFIX + "1";
+		localTargeter = AddTargetingEntityInternal (aimingController.transform.position, 
+			aimingController.transform.eulerAngles, 
+			uid);
+		Service.Network.BroadcastEntitySpawned(localTargeter);
+		return localTargeter;
+	}
+
 	public ShipEntity AddLocalShip(ShipEntry ship, Vector3 spawnPos = new Vector3(), Vector3 spawnRot = new Vector3())
 	{
 		if (!localEntityTypeCounts.ContainsKey (ship.ResourceName))
@@ -197,23 +264,6 @@ public class EntityController
 		Service.Network.BroadcastEntitySpawned (localShip);
 
 		return localShip;
-	}
-
-	public MapEntity AddLocalMap(MapEntry map)
-	{
-		string uid = MAP_PREFIX + map.EntryName;
-		localMap = new MapEntity (map, uid, Vector3.zero, Vector3.zero);
-		return localMap;
-	}
-
-	public TargetingEntity AddLocalTargetingEntity(GameObject aimingController)
-	{
-		string uid = USER_PREFIX + Service.Network.PlayerId + TARGET_RIG_PREFIX + "1";
-		localTargeter = AddTargetingEntityInternal (aimingController.transform.position, 
-			aimingController.transform.eulerAngles, 
-			uid);
-		Service.Network.BroadcastEntitySpawned(localTargeter);
-		return localTargeter;
 	}
 
 	private ShipEntity AddShipInternal(ShipEntry ship, Vector3 spawnPos, Vector3 spawnRot, string uid)
@@ -247,7 +297,10 @@ public class EntityController
 				enemyTarget.Model.SetActive(false);
 				break;
 			case EntityType.EnvironmentObject:
-
+				Debug.Log ("Environment Object added: " + spawnInfo.EntityId);
+				EnvironmentObjectEntry objEntry = 
+					typeof(EnvironmentObjectEntry).GetProperty (spawnInfo.EntryName).GetValue (null, null) as EnvironmentObjectEntry;
+				AddEnvironmentObjectInternal (objEntry, spawnInfo.SpawnPos, spawnInfo.SpawnRot, spawnInfo.EntityId);
 				break;
 		}
 	}
