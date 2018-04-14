@@ -60,7 +60,7 @@ namespace Controllers
 			controls.RegisterOnPress (rightButton, OnrightButtonPressed);
 			shipCenter = UnityUtils.FindGameObject (pedestal, "ShipCenter");
 			currentShip = SHIP_ENTRIES [shipIndex];
-			loadShip (shipIndex);
+			LoadShip (shipIndex);
 
 			leftButtonMap = UnityUtils.FindGameObject (pedestal, "arrow left map");
 			controls.RegisterOnPress (leftButtonMap, OnLeftMapPressed);
@@ -87,7 +87,7 @@ namespace Controllers
 			}
 
 			currentShip = SHIP_ENTRIES [shipIndex];
-			loadShip (shipIndex);
+			LoadShip (shipIndex);
 		}
 
 		private void OnrightButtonPressed()
@@ -99,7 +99,7 @@ namespace Controllers
 			}
 
 			currentShip = SHIP_ENTRIES [shipIndex];
-			loadShip (shipIndex);
+			LoadShip (shipIndex);
 		}
 
 		private void OnLeftMapPressed()
@@ -126,7 +126,7 @@ namespace Controllers
 			mapText.text = currentMap.EntryName;
 		}
 
-		private void loadShip(int Index)
+		private void LoadShip(int Index)
 		{	
 			if (currentShipModel != null)
 			{
