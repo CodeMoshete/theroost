@@ -197,6 +197,7 @@ public class EntityController
 		{
 			EnvironmentObjectEntry entry = pieceSpawners [i].GetComponent<EnvironmentObjectSpawn> ().Entry;
 			AddLocalEnvironmentObject (entry, pieceSpawners[i].transform.position, pieceSpawners[i].transform.eulerAngles);
+			GameObject.Destroy (pieceSpawners [i]);
 		}
 		return localMap;
 	}
@@ -218,7 +219,7 @@ public class EntityController
 
 			string resCount = localEntityTypeCounts [entry.ResourceName].ToString ();
 			string objId = USER_PREFIX + Service.Network.PlayerId + SHIP_PREFIX + entry.ResourceName + resCount;
-			Debug.Log ("mine: " + objId);
+			Debug.Log ("Environment Object: " + objId + ", " + spawnPos.ToString() + ", " + spawnRot.ToString());
 
 			envObj = AddEnvironmentObjectInternal (entry, spawnPos, spawnRot, objId);
 			Service.Network.BroadcastEntitySpawned (envObj);

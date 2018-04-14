@@ -39,7 +39,7 @@ namespace Services
 		{ 
 			get
 			{ 
-				return (m_netStatus == NetworkStatus.Disconnected) || PhotonNetwork.player.isMasterClient; 
+				return (m_netStatus == NetworkStatus.Disconnected) || PhotonNetwork.player.IsMasterClient; 
 			} 
 		}
 		public bool IsInitialized { get{ return m_isInitialized; } set{} }
@@ -97,8 +97,8 @@ namespace Services
 		public override void OnJoinedLobby()
 		{
 			RoomOptions options = new RoomOptions();
-			options.isOpen = true;
-			options.isVisible = true;
+			options.IsOpen = true;
+			options.IsVisible = true;
 			PhotonNetwork.JoinOrCreateRoom(ROOM_NAME, options, TypedLobby.Default);
 			PhotonNetwork.OnEventCall += OnNetworkEvent;
 		}

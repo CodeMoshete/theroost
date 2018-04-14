@@ -5,14 +5,16 @@ namespace Models
 {
 	public class EnvironmentObjectEntity : Entity
 	{
-		public override Vector3 SpawnPos {
+		public override Vector3 SpawnPos 
+		{
 			get
 			{
 				return Model.transform.position;
 			}
 		}
 
-		public override Vector3 SpawnRotation {
+		public override Vector3 SpawnRotation 
+		{
 			get
 			{
 				return Model.transform.eulerAngles;

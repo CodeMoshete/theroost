@@ -1,0 +1,94 @@
+Initialize engine version: 5.6.5f1 (2cac56bf7bb6)
+GfxDevice: creating device client; threaded=1
+VR: OpenVR Error! OpenVR failed initialization with error code VRInitError_Init_HmdNotFoundPresenceFailed: "Hmd Not Found Presence Failed (126)"!
+ 
+(Filename:  Line: 1028)
+
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1080 Ti (ID=0x1b06)
+    Vendor:   NVIDIA
+    VRAM:     11127 MB
+    Driver:   23.21.13.9135
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.VR.dll (this message is harmless)
+Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.VR.dll into Unity Child Domain
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Photon3Unity3D.dll (this message is harmless)
+Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Photon3Unity3D.dll into Unity Child Domain
+- Completed reload, in  0.025 seconds
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\System.dll (this message is harmless)
+<RI> Initializing input.
+<RI> Input initialized.
+desktop: 1920x1080 120Hz; virtual: 3840x1080 at 0,0
+<RI> Initialized touch support.
+VR: OpenVR Error! OpenVR failed initialization with error code VRInitError_Init_HmdNotFoundPresenceFailed: "Hmd Not Found Presence Failed (126)"!
+ 
+(Filename:  Line: 1028)
+
+VR: OpenVR Error! OpenVR failed initialization with error code VRInitError_Init_HmdNotFoundPresenceFailed: "Hmd Not Found Presence Failed (126)"!
+ 
+(Filename:  Line: 1028)
+
+UnloadTime: 0.982116 ms
+SteamVR_GameView is deprecated in Unity 5.4 - REMOVING
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+mine: u*1s*Models/GalaxyClass0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Environment Object: u*1s*EnvironmentObjects/AsteroidMain0, (-18.8, -5.9, -1.2), (357.9, 11.2, 349.7)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Environment Object: u*1s*EnvironmentObjects/AsteroidMain1, (-21.8, -8.0, -4.4), (350.2, 73.1, 330.7)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Environment Object: u*1s*EnvironmentObjects/AsteroidMain2, (-27.4, -1.8, -1.9), (345.9, 213.0, 21.5)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Environment Object: u*1s*EnvironmentObjects/AsteroidMain3, (-26.7, -5.2, -14.9), (303.8, 302.1, 32.7)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Environment Object: u*1s*EnvironmentObjects/AsteroidMain4, (-14.4, 3.6, -8.6), (303.8, 302.1, 32.7)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Environment Object: u*1s*EnvironmentObjects/AsteroidMain5, (-14.2, 3.6, 0.5), (270.0, 0.0, 0.0)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Environment Object: u*1s*EnvironmentObjects/AsteroidHole0, (-20.9, 0.3, -4.0), (270.0, 0.0, 0.0)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+theirs: u*2s*Models/GalaxyClass0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+their targeting reticle added: u*2t*1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 6 worker threads for Enlighten.
+  Thread -> id: 24dc -> priority: 1 
+  Thread -> id: 17cc -> priority: 1 
+  Thread -> id: 3f20 -> priority: 1 
+  Thread -> id: 2a44 -> priority: 1 
+  Thread -> id: 32e4 -> priority: 1 
+  Thread -> id: 2cd8 -> priority: 1 

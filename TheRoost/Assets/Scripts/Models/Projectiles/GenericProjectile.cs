@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using Models.Interfaces;
-using System;
 using MonoBehaviors;
+using UnityEngine;
 
 namespace Models.Projectiles
 {

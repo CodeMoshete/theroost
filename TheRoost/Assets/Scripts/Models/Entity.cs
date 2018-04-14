@@ -43,8 +43,8 @@ namespace Models
 			EntryName = entryName;
 
 			Model = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(resourceName));
-			Model.transform.position = SpawnPos;
-			Model.transform.eulerAngles = SpawnRotation;
+			Model.transform.position = spawnPos;
+			Model.transform.eulerAngles = spawnRotation;
 		}
 
 		public void Unload ()
