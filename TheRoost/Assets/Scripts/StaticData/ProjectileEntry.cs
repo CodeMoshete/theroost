@@ -39,7 +39,7 @@ public class ProjectileEntry
 		get
 		{ 
 			return new ProjectileEntry (
-				"Models/GalaxyClass", 
+				"Models/Disruptor", 
 				"Disruptor", 
 				"Models.Projectiles.GenericProjectile",
 				"FX/ExplosionHD",

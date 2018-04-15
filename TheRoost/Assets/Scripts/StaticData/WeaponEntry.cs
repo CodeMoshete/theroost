@@ -55,4 +55,16 @@ public class WeaponEntry
 				3f);
 		} 
 	}
+
+	public static WeaponEntry Disruptor 
+	{ 
+		get
+		{ 
+			return new WeaponEntry (
+				ProjectileEntry.Disruptor, 
+				"PhaserStrip",
+				"",
+				3f);
+		} 
+	}
 }
