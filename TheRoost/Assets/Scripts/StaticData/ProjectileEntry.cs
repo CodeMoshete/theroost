@@ -11,6 +11,7 @@ public class ProjectileEntry
 	public float TrackingRate { get; private set; }
 	public float Lifetime { get; private set; }
 	public int Damage { get; private set; }
+	public bool DestroyOnHit { get; private set; }
 
 	/// EntryName must ALWAYS be the same as the property name.
 	public ProjectileEntry(
@@ -21,7 +22,8 @@ public class ProjectileEntry
 		int damage,
 		float moveSpeed, 
 		float trackingRate,
-		float lifetime)
+		float lifetime,
+		bool destroyOnHit)
 	{
 		ResourceName = resourceName;
 		MoveSpeed = moveSpeed;
@@ -31,6 +33,7 @@ public class ProjectileEntry
 		TrackingRate = trackingRate;
 		Lifetime = lifetime;
 		Damage = damage;
+		DestroyOnHit = destroyOnHit;
 	}
 
 	// Add more ship entries below here as we create them.
@@ -42,11 +45,12 @@ public class ProjectileEntry
 				"Models/Disruptor", 
 				"Disruptor", 
 				"Models.Projectiles.GenericProjectile",
-				"FX/ExplosionHD",
+				"FX/DisruptorHit",
 				1,
-				0.01f, 
+				7.5f, 
 				0.01f,
-				5f);
+				2f,
+				true);
 		} 
 	}
 
@@ -60,9 +64,10 @@ public class ProjectileEntry
 				"Models.Projectiles.GenericBeam", 
 				"FX/BeamHit",
 				1,
-				3f, 
+				10f, 
 				3f,
-				2f);
+				2f,
+				false);
 		} 
 	}
 
@@ -75,10 +80,11 @@ public class ProjectileEntry
 				"PhotonTorpedo", 
 				"Models.Projectiles.GenericProjectile", 
 				"FX/ExplosionHD",
-				5,
-				0.04f, 
+				6,
+				5f, 
 				0.01f,
-				5f);
+				5f,
+				true);
 		} 
 	}
 }

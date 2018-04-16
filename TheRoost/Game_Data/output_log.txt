@@ -25,7 +25,7 @@ Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Un
 Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\UnityEngine.VR.dll into Unity Child Domain
 Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Photon3Unity3D.dll (this message is harmless)
 Loading C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\Photon3Unity3D.dll into Unity Child Domain
-- Completed reload, in  0.025 seconds
+- Completed reload, in  0.022 seconds
 Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Ben\Documents\theroost\TheRoost\Game_Data\Managed\System.dll (this message is harmless)
 <RI> Initializing input.
@@ -40,12 +40,12 @@ VR: OpenVR Error! OpenVR failed initialization with error code VRInitError_Init_
  
 (Filename:  Line: 1028)
 
-UnloadTime: 0.982116 ms
+UnloadTime: 0.916556 ms
 SteamVR_GameView is deprecated in Unity 5.4 - REMOVING
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-mine: u*1s*Models/GalaxyClass0
+mine: u*1s*Models/Gunship0
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
@@ -77,7 +77,7 @@ Environment Object: u*1s*EnvironmentObjects/AsteroidHole0, (-20.9, 0.3, -4.0), (
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-theirs: u*2s*Models/GalaxyClass0
+theirs: u*2s*Models/Gunship0
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
@@ -85,10 +85,14 @@ their targeting reticle added: u*2t*1
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
+RaiseEvent() failed. Your event is not being sent! Check if your are in a Room and the eventCode must be less than 200 (0..199).
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
 Setting up 6 worker threads for Enlighten.
-  Thread -> id: 24dc -> priority: 1 
-  Thread -> id: 17cc -> priority: 1 
-  Thread -> id: 3f20 -> priority: 1 
-  Thread -> id: 2a44 -> priority: 1 
-  Thread -> id: 32e4 -> priority: 1 
-  Thread -> id: 2cd8 -> priority: 1 
+  Thread -> id: 36c0 -> priority: 1 
+  Thread -> id: 26ac -> priority: 1 
+  Thread -> id: f3c -> priority: 1 
+  Thread -> id: 37a8 -> priority: 1 
+  Thread -> id: 4484 -> priority: 1 
+  Thread -> id: 4660 -> priority: 1 

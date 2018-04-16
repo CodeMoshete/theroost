@@ -15,6 +15,11 @@ namespace MonoBehaviors
 			this.onCollision = onCollision;
 		}
 
+		public void UnregisterListeners()
+		{
+			onCollision = null;
+		}
+
 		public void OnTriggerEnter(Collider other)
 		{
 			if(onCollision != null)

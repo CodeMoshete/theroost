@@ -17,7 +17,7 @@ namespace Models.Projectiles
 
 		public override void Update(float dt)
 		{
-			model.transform.Translate(0f, 0f, projectileData.MoveSpeed);
+			model.transform.Translate(0f, 0f, projectileData.MoveSpeed * dt);
 			lifetimeLeft -= dt;
 			if(lifetimeLeft <= 0f)
 			{

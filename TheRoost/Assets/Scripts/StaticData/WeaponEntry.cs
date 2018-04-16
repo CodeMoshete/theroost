@@ -56,13 +56,13 @@ public class WeaponEntry
 		} 
 	}
 
-	public static WeaponEntry Disruptor 
+	public static WeaponEntry DisruptorBank
 	{ 
 		get
 		{ 
 			return new WeaponEntry (
 				ProjectileEntry.Disruptor, 
-				"PhaserStrip",
+				"DisruptorBank",
 				"",
 				3f);
 		} 

@@ -18,6 +18,7 @@ namespace Models.Projectiles
 		protected float lifetimeLeft;
 		protected ShipEntity owner;
 		protected bool isLocal;
+		private bool destroyOnHit;
 
 		public virtual void Initialize(
 			string uid,
@@ -32,6 +33,7 @@ namespace Models.Projectiles
 			model = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(template.ResourceName));
 			this.owner = owner;
 			this.isLocal = isLocal;
+			destroyOnHit = projectileData.DestroyOnHit;
 
 			model.AddComponent<ProjectileHitDetection>();
 			model.GetComponent<ProjectileHitDetection>().RegisterListener(OnProjectileCollision);
@@ -53,6 +55,11 @@ namespace Models.Projectiles
 						owner.Id, 
 						entityRef.Entity.Id, 
 						entityRef.Entity.CurrentHealth);
+				}
+
+				if (destroyOnHit)
+				{
+					onDestroy (this);
 				}
 			}
 		}
@@ -86,6 +93,7 @@ namespace Models.Projectiles
 
 		public virtual void Unload ()
 		{
+			model.GetComponent<ProjectileHitDetection>().UnregisterListeners();
 			GameObject.Destroy(model);
 			model = null;
 			projectileData = null;
