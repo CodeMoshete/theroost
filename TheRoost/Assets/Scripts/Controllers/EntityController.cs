@@ -274,6 +274,13 @@ public class EntityController
 		return entity;
 	}
 
+	private AIShipEntity AddAiShipInternal(ShipEntry ship, Vector3 spawnPos, Vector3 spawnRot, string uid)
+	{
+		AIShipEntity entity = new AIShipEntity (ship, uid, spawnPos, spawnRot);
+		trackedEntities.Add (entity.Id, entity);
+		return entity;
+	}
+
 	private TargetingEntity AddTargetingEntityInternal(Vector3 spawnPos, Vector3 spawnRot, string uid)
 	{
 		TargetingEntity entity = new TargetingEntity (uid, spawnPos, spawnRot);
